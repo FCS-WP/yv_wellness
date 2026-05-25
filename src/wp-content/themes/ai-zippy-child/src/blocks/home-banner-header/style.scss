@@ -1,0 +1,89 @@
+.hbh {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 500px;
+	width: 100%;
+	max-width: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	padding: 3rem 1.5rem;
+	margin: 0;
+
+	&.alignfull {
+		width: 100vw;
+		max-width: 100vw;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	@media (min-width: 768px) {
+		min-height: 600px;
+		padding: 4rem 2rem;
+	}
+}
+
+.hbh__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.hbh__container {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: 680px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.hbh__content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+.hbh__heading {
+	font-family: 'Marcellus', serif;
+	font-size: clamp(1.75rem, 1.25rem + 2.5vw, 2.75rem);
+	font-weight: 400;
+	line-height: 1.2;
+	color: #3B2715;
+	margin: 0;
+}
+
+.hbh__body {
+	font-family: 'Raleway', sans-serif;
+	font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1.0625rem);
+	font-weight: 400;
+	line-height: 1.8;
+	color: #615245;
+	margin: 0;
+	max-width: 520px;
+}
+
+.hbh__btn {
+	display: inline-block;
+	font-family: 'Raleway', sans-serif;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #ffffff;
+	background-color: #3B2715;
+	padding: 0.875rem 2.5rem;
+	border: 1px solid #3B2715;
+	transition: background-color 0.3s ease, color 0.3s ease;
+
+	&:hover {
+		background-color: transparent;
+		color: #3B2715;
+	}
+}

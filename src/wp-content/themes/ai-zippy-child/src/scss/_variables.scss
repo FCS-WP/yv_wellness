@@ -1,0 +1,48 @@
+// =============================================================================
+// Child Theme Variables — YV Wellness brand tokens
+// =============================================================================
+
+// === Brand Colors (Child Theme Override) ===
+$c-primary:      var(--wp--preset--color--primary);      // #d50017
+$c-secondary:    var(--wp--preset--color--secondary);    // #7c4612
+$c-accent:       var(--wp--preset--color--accent);       // #3B2715
+$c-light-cream:  var(--wp--preset--color--light-cream);  // #FFFAF3
+$c-light-pink:   var(--wp--preset--color--light-pink);   // #FFF2F2
+$c-medium-brown: var(--wp--preset--color--medium-brown); // #615245
+$c-white:        var(--wp--preset--color--white);        // #ffffff
+$c-black:        var(--wp--preset--color--black);        // #000000
+
+// === Typography ===
+$font-heading: 'Marcellus', serif;
+$font-body: 'Raleway', sans-serif;
+
+// === Responsive Font Sizes ===
+$fs-small:   clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+$fs-medium:  clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+$fs-large:   clamp(1.25rem, 1rem + 1.25vw, 1.75rem);
+$fs-xlarge:  clamp(1.75rem, 1.25rem + 2.5vw, 2.5rem);
+$fs-xxlarge: clamp(2.25rem, 1.5rem + 3.75vw, 3.5rem);
+
+// === Breakpoints ===
+$bp-sm:  480px;
+$bp-md:  768px;
+$bp-lg:  1024px;
+$bp-xl:  1200px;
+$bp-xxl: 1400px;
+
+// === Responsive Mixins ===
+@mixin from($bp) {
+  @if $bp == sm { @media (min-width: $bp-sm) { @content; } }
+  @else if $bp == md { @media (min-width: $bp-md) { @content; } }
+  @else if $bp == lg { @media (min-width: $bp-lg) { @content; } }
+  @else if $bp == xl { @media (min-width: $bp-xl) { @content; } }
+  @else if $bp == xxl { @media (min-width: $bp-xxl) { @content; } }
+}
+
+@mixin until($bp) {
+  @if $bp == sm { @media (max-width: ($bp-sm - 1px)) { @content; } }
+  @else if $bp == md { @media (max-width: ($bp-md - 1px)) { @content; } }
+  @else if $bp == lg { @media (max-width: ($bp-lg - 1px)) { @content; } }
+  @else if $bp == xl { @media (max-width: ($bp-xl - 1px)) { @content; } }
+  @else if $bp == xxl { @media (max-width: ($bp-xxl - 1px)) { @content; } }
+}

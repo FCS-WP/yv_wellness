@@ -1,15 +1,60 @@
 // =============================================================================
-// Child theme styles — client-specific overrides.
+// Child theme styles — YV Wellness client-specific overrides.
 //
-// Parent tokens (colors, breakpoints, mixins) are available via:
-//   @use "@parent-scss/variables" as *;
-//
-// Example:
-//   @use "@parent-scss/variables" as *;
-//   .client-hero { color: $c-accent; @include from(md) { ... } }
+// Uses child theme's own variables (colors, breakpoints, mixins).
 // =============================================================================
 
-@use "@parent-scss/variables" as *;
+@use "variables" as *;
 
-// Add client-specific styles below.
-// body { /* custom styles */ }
+// === Base Typography ===
+body {
+  font-family: $font-body;
+  font-size: $fs-medium;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
+  line-height: 1.3;
+}
+
+h1 { font-size: $fs-xxlarge; }
+h2 { font-size: $fs-xlarge; }
+h3 { font-size: $fs-large; }
+h4 { font-size: $fs-medium; }
+
+// === Layout Resets ===
+// Remove inline padding from main content wrapper (set in template editor)
+.wp-site-blocks > main,
+.wp-site-blocks > .wp-block-group {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+// Remove block gap/margin between site blocks children
+.wp-site-blocks > * {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}
+
+// Remove max-width constraint on all blocks inside layout-constrained containers
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+// Ensure full-width blocks stretch edge-to-edge
+.is-layout-constrained > .alignfull {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+}
+
+// Content container resets
+.wp-block-post-content.is-layout-constrained {
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
