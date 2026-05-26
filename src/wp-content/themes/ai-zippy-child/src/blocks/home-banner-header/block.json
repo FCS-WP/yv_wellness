@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/home-banner-header",
+  "version": "1.0.0",
+  "title": "Home Banner Header",
+  "category": "ai-zippy",
+  "icon": "cover-image",
+  "description": "A full-width hero banner with background image, overlay, heading, body text, and CTA button.",
+  "keywords": ["banner", "hero", "header", "home"],
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false,
+    "color": {
+      "background": true,
+      "text": false
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Transform Beauty, Confidence & Wellness"
+    },
+    "body": {
+      "type": "string",
+      "default": "Advanced beauty and wellness technology that supports hair growth, skin rejuvenation, body contouring, and long-term confidence."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "SHOP NOW"
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": "#"
+    },
+    "bgImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "bgImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "bgColor": {
+      "type": "string",
+      "default": "#FFFAF3"
+    },
+    "overlayColor": {
+      "type": "string",
+      "default": "rgba(255, 250, 243, 0.6)"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 60
+    }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

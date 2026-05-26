@@ -1,0 +1,15 @@
+.wp-block-ai-zippy-home-banner-header {
+	.hbh__heading,
+	.hbh__body,
+	.hbh__btn {
+		cursor: text;
+	}
+
+	.hbh__btn {
+		pointer-events: none;
+	}
+
+	.components-placeholder {
+		min-height: 200px;
+	}
+}

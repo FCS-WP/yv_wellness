@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/home-advantages-icon-block",
+  "version": "1.0.0",
+  "title": "Home Advantages Icon Block",
+  "category": "ai-zippy",
+  "icon": "grid-view",
+  "description": "Grid of icon blocks with subtitle, heading, and description. Supports background image and color.",
+  "keywords": ["advantages", "icons", "grid", "features", "home"],
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false,
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "attributes": {
+    "items": {
+      "type": "array",
+      "default": [
+        { "iconUrl": "", "iconId": 0, "subtitle": "REGROW", "heading": "Effective Hair Growth", "text": "Science-backed solutions to restore hair density and scalp health." },
+        { "iconUrl": "", "iconId": 0, "subtitle": "REJUVENATE", "heading": "Facial Lifting & Skin", "text": "Non-invasive rejuvenation for a naturally youthful, confident appearance." },
+        { "iconUrl": "", "iconId": 0, "subtitle": "REVEAL", "heading": "Pigmentation Management", "text": "Targeted technology for clearer, brighter, and more even skin tones." },
+        { "iconUrl": "", "iconId": 0, "subtitle": "RESHAPE", "heading": "Slimming & Metabolism", "text": "Advanced contouring that supports metabolic health and body goals." }
+      ]
+    },
+    "bgColor": {
+      "type": "string",
+      "default": "#615245"
+    },
+    "bgImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "bgImageId": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

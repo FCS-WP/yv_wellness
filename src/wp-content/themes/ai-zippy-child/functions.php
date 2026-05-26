@@ -107,6 +107,31 @@ add_action('wp_enqueue_scripts', function (): void {
 }, 20);
 
 // =============================================================================
+// Google Fonts — Marcellus & Raleway
+// =============================================================================
+
+add_action('wp_enqueue_scripts', function (): void {
+    wp_enqueue_style(
+        'ai-zippy-child-google-fonts',
+        'https://fonts.googleapis.com/css2?family=Marcellus&family=Raleway:wght@300;400;500;600;700&display=swap',
+        [],
+        null
+    );
+}, 5);
+
+/**
+ * Also load Google Fonts in the block editor.
+ */
+add_action('enqueue_block_editor_assets', function (): void {
+    wp_enqueue_style(
+        'ai-zippy-child-google-fonts-editor',
+        'https://fonts.googleapis.com/css2?family=Marcellus&family=Raleway:wght@300;400;500;600;700&display=swap',
+        [],
+        null
+    );
+});
+
+// =============================================================================
 // Auto-register child theme blocks (wp-scripts build output)
 // =============================================================================
 

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/home-promise",
+  "version": "1.0.0",
+  "title": "Home Promise",
+  "category": "ai-zippy",
+  "icon": "yes-alt",
+  "description": "Two-column section with promise text, feature list, and image.",
+  "keywords": ["promise", "features", "about", "home"],
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false,
+    "color": {
+      "background": true,
+      "text": false
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "attributes": {
+    "subtitle": {
+      "type": "string",
+      "default": "OUR PROMISE"
+    },
+    "heading": {
+      "type": "string",
+      "default": "Empowering you to live healthier and more beautiful."
+    },
+    "description": {
+      "type": "string",
+      "default": "We integrate innovative beauty technology with non-invasive treatments that don't compromise your lifestyle."
+    },
+    "features": {
+      "type": "array",
+      "default": [
+        { "title": "Safe & Effective", "text": "Clinically proven results without downtime." },
+        { "title": "Home-Care Solutions", "text": "Seamlessly integrate wellness into your daily routine." },
+        { "title": "Long-term Health", "text": "We focus on metabolic health, not just surface results." }
+      ]
+    },
+    "imageId": {
+      "type": "number",
+      "default": 0
+    },
+    "imageUrl": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
