@@ -1,0 +1,58 @@
+@use "sass:color";
+@use "../../scss/variables" as *;
+
+// =============================================================================
+// About Icons Text — editor-only refinements
+// Doubled selector to win specificity over Gutenberg defaults.
+// =============================================================================
+
+.wp-block-ai-zippy-about-icons-text.wp-block-ai-zippy-about-icons-text {
+	.aitb__section-heading,
+	.aitb__heading,
+	.aitb__text {
+		cursor: text;
+	}
+
+	// give an empty section heading some shape so it can be clicked
+	.aitb__section-heading:empty {
+		min-height: 1.75em;
+		opacity: 0.55;
+	}
+
+	.aitb__icon-wrap {
+		cursor: pointer;
+		outline: none;
+	}
+
+	.aitb__icon-wrap--empty {
+		min-width: 92px;
+		min-height: 92px;
+		border: 1px dashed rgba(59, 39, 21, 0.25);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: border-color 0.2s ease, background-color 0.2s ease;
+
+		&:hover {
+			border-color: $c-secondary;
+			background-color: rgba(255, 250, 243, 0.7) !important;
+		}
+	}
+
+	.aitb__icon-placeholder {
+		font-family: $font-body;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgba(59, 39, 21, 0.55);
+		text-align: center;
+		padding: 4px;
+		pointer-events: none;
+	}
+
+	// keep hover preview visible without yanking layout in editor
+	.aitb__item:hover {
+		transform: translateY(-3px);
+	}
+}

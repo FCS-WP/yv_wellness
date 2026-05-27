@@ -1,0 +1,187 @@
+@use "sass:color";
+@use "../../scss/variables" as *;
+
+/* ==========================================================================
+   Banner Header Page (.bhp)
+   Editorial / luxury page banner — used on every page except the homepage.
+   ========================================================================== */
+
+.bhp {
+	--bhp-min-height: 280px;
+	--bhp-pad-y: clamp(3rem, 4vw + 1rem, 6rem);
+	--bhp-pad-x: clamp(1.25rem, 4vw, 3rem);
+	--bhp-max-width: 64rem;
+
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--bhp-min-height);
+	padding: var(--bhp-pad-y) var(--bhp-pad-x);
+	overflow: hidden;
+	text-align: center;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	isolation: isolate;
+
+	/* Subtle vignette for added depth on top + bottom edges. */
+	&::before,
+	&::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 70px;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	&::before {
+		top: 0;
+		background: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0.18),
+			rgba(0, 0, 0, 0)
+		);
+	}
+
+	&::after {
+		bottom: 0;
+		background: linear-gradient(
+			to top,
+			rgba(0, 0, 0, 0.22),
+			rgba(0, 0, 0, 0)
+		);
+	}
+
+	@include until(md) {
+		--bhp-min-height: 200px;
+		--bhp-pad-y: clamp(2.25rem, 8vw, 3.5rem);
+
+		&::before,
+		&::after {
+			height: 40px;
+		}
+	}
+}
+
+/* Overlay sits between background and content. */
+.bhp__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background-color: rgba(59, 39, 21, 0.65);
+	transition: background-color 0.3s ease;
+}
+
+/* Content layer above overlay. */
+.bhp__content {
+	position: relative;
+	z-index: 3;
+	width: 100%;
+	max-width: var(--bhp-max-width);
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(0.75rem, 1.2vw, 1.25rem);
+}
+
+/* Decorative ornament — thin centered hairline above the heading. */
+.bhp__ornament {
+	display: block;
+	width: clamp(36px, 6vw, 64px);
+	height: 1px;
+	background: currentColor;
+	opacity: 0.55;
+	margin-bottom: 0.25rem;
+	color: $c-white;
+
+	@include until(md) {
+		width: 32px;
+	}
+}
+
+/* Heading — Marcellus serif, large fluid sizing, elegant tracking. */
+.bhp__heading {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $fs-xxlarge;
+	font-weight: 400;
+	line-height: 1.1;
+	letter-spacing: 0.01em;
+	color: $c-white;
+	text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+	word-break: break-word;
+
+	em {
+		font-style: italic;
+		color: $c-light-cream;
+	}
+
+	strong {
+		font-weight: 600;
+	}
+
+	@include until(md) {
+		letter-spacing: 0.005em;
+	}
+}
+
+/* Breadcrumb — refined small caps-feel with elegant separators. */
+.bhp__breadcrumb {
+	margin: 0;
+	font-family: $font-body;
+	font-size: clamp(0.75rem, 0.65rem + 0.4vw, 0.95rem);
+	font-weight: 400;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.85);
+	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+	max-width: 90%;
+
+	a {
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+		padding-bottom: 1px;
+		transition: border-color 0.25s ease, color 0.25s ease;
+
+		&:hover,
+		&:focus-visible {
+			color: $c-light-cream;
+			border-bottom-color: currentColor;
+		}
+	}
+
+	em {
+		font-style: italic;
+		letter-spacing: 0.12em;
+	}
+
+	@include until(md) {
+		letter-spacing: 0.14em;
+	}
+}
+
+/* When a background image is present, slightly lift the heading via
+   a stronger drop-shadow for guaranteed legibility. */
+.bhp.bhp--has-image {
+	.bhp__heading {
+		text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55),
+			0 1px 2px rgba(0, 0, 0, 0.35);
+	}
+
+	.bhp__breadcrumb {
+		text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+	}
+}
+
+/* Solid (no-image) variant: soften overlay default look. */
+.bhp.bhp--solid {
+	.bhp__overlay {
+		mix-blend-mode: multiply;
+	}
+}

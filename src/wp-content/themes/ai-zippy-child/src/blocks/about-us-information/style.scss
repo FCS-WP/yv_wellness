@@ -1,0 +1,371 @@
+@use "sass:color";
+@use "../../scss/variables" as *;
+
+// =============================================================================
+// About Us Information — editorial split-content block
+// BEM prefix: .aui (about-us-information)
+// =============================================================================
+
+.aui {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	padding: clamp(3.5rem, 5vw + 2rem, 7rem) clamp(1.25rem, 3vw, 3rem);
+
+	// soft warm wash behind the content
+	&::before {
+		content: "";
+		position: absolute;
+		inset: -10% auto auto -8%;
+		width: min(50vw, 480px);
+		height: min(50vw, 480px);
+		background: radial-gradient(
+			circle at center,
+			rgba(213, 0, 23, 0.04),
+			transparent 70%
+		);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: auto -8% -12% auto;
+		width: min(45vw, 420px);
+		height: min(45vw, 420px);
+		background: radial-gradient(
+			circle at center,
+			rgba(124, 70, 18, 0.05),
+			transparent 70%
+		);
+		pointer-events: none;
+		z-index: 0;
+	}
+}
+
+.aui__bg-overlay {
+	position: absolute;
+	inset: 0;
+	background-color: rgba(255, 250, 243, 0.78);
+	pointer-events: none;
+	z-index: 1;
+}
+
+// -----------------------------------------------------------------------------
+// Wrapper — flex split layout
+// -----------------------------------------------------------------------------
+.aui__wrapper {
+	position: relative;
+	z-index: 2;
+	max-width: 1240px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: clamp(2rem, 4vw, 3.5rem);
+	align-items: center;
+
+	@include from(md) {
+		flex-direction: row;
+		align-items: center;
+		gap: clamp(2.5rem, 5vw, 5.5rem);
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Left column — content
+// -----------------------------------------------------------------------------
+.aui__content {
+	flex: 1 1 55%;
+	max-width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: clamp(1rem, 1.5vw, 1.5rem);
+
+	@include from(md) {
+		max-width: 56ch;
+	}
+}
+
+.aui__sub-heading {
+	font-family: $font-body;
+	font-size: $fs-small;
+	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: $c-primary;
+	margin: 0;
+	position: relative;
+	padding-left: 3.25rem;
+
+	// editorial side rule
+	&::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 2.25rem;
+		height: 1px;
+		background-color: currentColor;
+		opacity: 0.7;
+	}
+}
+
+.aui__heading {
+	font-family: $font-heading;
+	font-weight: 400;
+	font-size: $fs-xxlarge;
+	line-height: 1.12;
+	letter-spacing: -0.012em;
+	color: $c-accent;
+	margin: 0;
+	max-width: 22ch;
+
+	em {
+		font-style: italic;
+		font-family: $font-heading;
+	}
+
+	u {
+		text-decoration: none;
+		background-image: linear-gradient(
+			transparent 62%,
+			rgba(213, 0, 23, 0.18) 62%,
+			rgba(213, 0, 23, 0.18) 92%,
+			transparent 92%
+		);
+		background-repeat: no-repeat;
+		padding: 0 0.05em;
+	}
+
+	strong {
+		font-weight: 600;
+		color: $c-secondary;
+	}
+}
+
+.aui__description {
+	font-family: $font-body;
+	font-weight: 400;
+	font-size: $fs-medium;
+	line-height: 1.78;
+	color: $c-medium-brown;
+	margin: 0;
+
+	p {
+		margin: 0 0 1.15em;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// drop the first letter of the first paragraph for a subtle editorial accent
+	p:first-of-type::first-letter {
+		font-family: $font-heading;
+		font-size: 1.05em;
+		color: $c-accent;
+	}
+
+	a {
+		color: $c-primary;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1px;
+		transition: color 0.25s ease;
+
+		&:hover {
+			color: $c-secondary;
+		}
+	}
+
+	strong {
+		color: $c-accent;
+		font-weight: 600;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Right column — media
+// -----------------------------------------------------------------------------
+.aui__media {
+	flex: 1 1 40%;
+	width: 100%;
+	max-width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	@include from(md) {
+		max-width: 520px;
+	}
+}
+
+.aui__media-frame {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	border-radius: 18px;
+	overflow: visible;
+	isolation: isolate;
+
+	// offset decorative frame behind the image
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 1.25rem -1.25rem -1.25rem 1.25rem;
+		border: 1px solid rgba(124, 70, 18, 0.35);
+		border-radius: 18px;
+		z-index: -1;
+		transition: inset 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+		pointer-events: none;
+	}
+
+	// subtle inner highlight
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: 18px;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	&:hover::before {
+		inset: 1.75rem -1.75rem -1.75rem 1.75rem;
+	}
+
+	@include until(md) {
+		max-width: 480px;
+		margin: 0 auto;
+
+		&::before {
+			inset: 0.875rem -0.875rem -0.875rem 0.875rem;
+		}
+	}
+}
+
+.aui__media-stamp {
+	position: absolute;
+	top: -1.25rem;
+	right: -1.25rem;
+	width: 4.5rem;
+	height: 4.5rem;
+	border-radius: 50%;
+	background: linear-gradient(135deg, $c-light-cream, $c-white);
+	border: 1px solid rgba(213, 0, 23, 0.15);
+	z-index: 3;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&::before {
+		content: "";
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		background: linear-gradient(135deg, $c-primary, $c-secondary);
+		opacity: 0.85;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0.4rem;
+		border-radius: 50%;
+		border: 1px dashed rgba(124, 70, 18, 0.35);
+	}
+
+	@include until(md) {
+		top: -0.875rem;
+		right: -0.875rem;
+		width: 3.5rem;
+		height: 3.5rem;
+
+		&::before {
+			width: 1.125rem;
+			height: 1.125rem;
+		}
+	}
+}
+
+.aui__image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 18px;
+	box-shadow:
+		0 1px 2px rgba(59, 39, 21, 0.06),
+		0 18px 48px -12px rgba(59, 39, 21, 0.22);
+	transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+	.aui__media-frame:hover & {
+		transform: scale(1.015);
+	}
+}
+
+.aui__media-frame--empty {
+	background: linear-gradient(
+		135deg,
+		rgba(255, 250, 243, 0.9),
+		rgba(255, 242, 242, 0.65)
+	);
+	border: 1px dashed rgba(124, 70, 18, 0.28);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 320px;
+}
+
+.aui__media-placeholder {
+	font-family: $font-body;
+	font-size: $fs-small;
+	font-weight: 600;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: rgba(59, 39, 21, 0.55);
+	text-align: center;
+	padding: 1rem;
+	pointer-events: none;
+}
+
+// -----------------------------------------------------------------------------
+// Mobile refinements (<md): stack content first, image below
+// -----------------------------------------------------------------------------
+@include until(md) {
+	.aui {
+		padding: clamp(2.5rem, 8vw, 4rem) 1.25rem;
+	}
+
+	.aui__wrapper {
+		flex-direction: column;
+	}
+
+	.aui__content {
+		order: 1;
+		width: 100%;
+		text-align: left;
+	}
+
+	.aui__media {
+		order: 2;
+		width: 100%;
+	}
+
+	.aui__sub-heading {
+		padding-left: 2.5rem;
+
+		&::before {
+			width: 1.75rem;
+		}
+	}
+
+	.aui__heading {
+		max-width: none;
+	}
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/banner-header-page",
+  "version": "1.0.0",
+  "title": "Banner Header Page",
+  "category": "ai-zippy",
+  "icon": "format-image",
+  "description": "A beautiful page banner with background, editable heading, and customizable breadcrumb.",
+  "keywords": ["banner", "header", "page", "breadcrumb"],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": { "padding": true, "margin": true }
+  },
+  "attributes": {
+    "heading": { "type": "string", "default": "Page Title" },
+    "headingColor": { "type": "string", "default": "#ffffff" },
+    "breadcrumb": { "type": "string", "default": "Home / About Us" },
+    "breadcrumbColor": { "type": "string", "default": "rgba(255,255,255,0.85)" },
+    "bgColor": { "type": "string", "default": "#3B2715" },
+    "bgImageUrl": { "type": "string", "default": "" },
+    "bgImageId": { "type": "number", "default": 0 },
+    "overlayColor": { "type": "string", "default": "rgba(59,39,21,0.65)" },
+    "overlayOpacity": { "type": "number", "default": 65 },
+    "minHeight": { "type": "number", "default": 280 }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
