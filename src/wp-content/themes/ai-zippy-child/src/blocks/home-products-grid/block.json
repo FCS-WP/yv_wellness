@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/home-products-grid",
+  "version": "1.0.0",
+  "title": "Home Products Grid",
+  "category": "ai-zippy",
+  "icon": "products",
+  "description": "Display a grid of WooCommerce products with customizable background and title.",
+  "keywords": ["products", "grid", "shop", "woocommerce", "home"],
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false,
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Top Rated"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": "#3B2715"
+    },
+    "bgColor": {
+      "type": "string",
+      "default": "#FFF2F2"
+    },
+    "bgImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "bgImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "productIds": {
+      "type": "array",
+      "default": []
+    },
+    "columns": {
+      "type": "number",
+      "default": 4
+    },
+    "rows": {
+      "type": "number",
+      "default": 2
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "popularity"
+    }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

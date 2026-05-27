@@ -1,0 +1,16 @@
+.wp-block-ai-zippy-home-gallery {
+	.hg__track {
+		// In editor, allow horizontal scroll preview
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
+	}
+
+	.hg__empty {
+		border: 2px dashed rgba(0, 0, 0, 0.15);
+		border-radius: 12px;
+		margin: 0 2rem;
+	}
+}
