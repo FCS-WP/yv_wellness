@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/about-us-information",
+  "version": "1.0.0",
+  "title": "About Us Information",
+  "category": "ai-zippy",
+  "icon": "align-pull-left",
+  "description": "A split-content block with text content on the left and an image on the right, perfect for about pages.",
+  "keywords": ["about", "information", "philosophy", "split", "image-text"],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": { "padding": true, "margin": true }
+  },
+  "attributes": {
+    "subHeading": { "type": "string", "default": "OUR PHILOSOPHY" },
+    "subHeadingColor": { "type": "string", "default": "#d50017" },
+    "heading": { "type": "string", "default": "Bridging the gap between <em><u>Science &amp; Vitality</u></em>." },
+    "headingColor": { "type": "string", "default": "#3B2715" },
+    "description": { "type": "string", "default": "<p>We believe that true beauty is the outward expression of internal health. Our product and device range isn't just about surface-level changes; it's about metabolic health, cellular rejuvenation, and structural integrity.</p><p>By integrating innovative beauty technology with non-invasive treatments, we empower individuals to achieve visible results safely and effectively.</p>" },
+    "descriptionColor": { "type": "string", "default": "#615245" },
+    "imageUrl": { "type": "string", "default": "" },
+    "imageId": { "type": "number", "default": 0 },
+    "imageAlt": { "type": "string", "default": "" },
+    "bgColor": { "type": "string", "default": "#ffffff" },
+    "bgImageUrl": { "type": "string", "default": "" },
+    "bgImageId": { "type": "number", "default": 0 }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

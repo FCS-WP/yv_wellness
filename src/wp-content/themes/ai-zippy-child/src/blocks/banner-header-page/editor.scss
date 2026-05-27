@@ -1,0 +1,94 @@
+@use "sass:color";
+@use "../../scss/variables" as *;
+
+/* ==========================================================================
+   Banner Header Page — editor-only overrides.
+   Doubled selector raises specificity above core block-editor defaults.
+   ========================================================================== */
+
+.wp-block-ai-zippy-banner-header-page.wp-block-ai-zippy-banner-header-page {
+	/* Ensure correct stacking + sensible defaults inside the canvas. */
+	position: relative;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	isolation: isolate;
+	overflow: hidden;
+	min-height: var(--bhp-min-height, 280px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: clamp(3rem, 4vw + 1rem, 6rem) clamp(1.25rem, 4vw, 3rem);
+
+	/* RichText placeholder fallback in editor. */
+	.bhp__heading,
+	.bhp__breadcrumb {
+		&[data-rich-text-placeholder]::before,
+		&:empty::before {
+			color: rgba(255, 255, 255, 0.55);
+		}
+	}
+
+	/* Heading inside editor — keep typography in sync with frontend. */
+	.bhp__heading {
+		font-family: $font-heading;
+		font-size: $fs-xxlarge;
+		font-weight: 400;
+		line-height: 1.1;
+		letter-spacing: 0.01em;
+		margin: 0;
+		text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+		max-width: 100%;
+		outline: none;
+
+		&:focus {
+			box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+			border-radius: 4px;
+		}
+	}
+
+	.bhp__breadcrumb {
+		font-family: $font-body;
+		font-size: clamp(0.75rem, 0.65rem + 0.4vw, 0.95rem);
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		margin: 0;
+		text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+		outline: none;
+
+		&:focus {
+			box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+			border-radius: 4px;
+		}
+	}
+
+	/* Reinforce content layering inside editor. */
+	.bhp__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.bhp__content {
+		position: relative;
+		z-index: 3;
+		width: 100%;
+		max-width: 64rem;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: clamp(0.75rem, 1.2vw, 1.25rem);
+	}
+
+	.bhp__ornament {
+		display: block;
+		width: clamp(36px, 6vw, 64px);
+		height: 1px;
+		background: currentColor;
+		opacity: 0.55;
+		color: $c-white;
+	}
+}

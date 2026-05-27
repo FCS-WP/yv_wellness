@@ -1,0 +1,71 @@
+@use "sass:color";
+@use "../../scss/variables" as *;
+
+// =============================================================================
+// About Us Information — editor-only refinements
+// Doubled selector to win specificity over Gutenberg defaults.
+// =============================================================================
+
+.wp-block-ai-zippy-about-us-information.wp-block-ai-zippy-about-us-information {
+	.aui__sub-heading,
+	.aui__heading,
+	.aui__description {
+		cursor: text;
+	}
+
+	// give empty rich-text fields some shape so they remain clickable
+	.aui__sub-heading:empty {
+		min-height: 1.4em;
+		opacity: 0.55;
+	}
+
+	.aui__heading:empty {
+		min-height: 1.2em;
+		opacity: 0.55;
+	}
+
+	.aui__description:empty {
+		min-height: 4em;
+		opacity: 0.55;
+	}
+
+	// keep description paragraph spacing legible inside the editor
+	.aui__description p {
+		margin: 0 0 1em;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.aui__media-frame {
+		cursor: pointer;
+		outline: none;
+
+		&:focus-visible {
+			outline: 2px solid $c-secondary;
+			outline-offset: 4px;
+		}
+	}
+
+	.aui__media-frame--empty {
+		min-height: 320px;
+		transition:
+			border-color 0.2s ease,
+			background-color 0.2s ease;
+
+		&:hover {
+			border-color: $c-secondary;
+			background: linear-gradient(
+				135deg,
+				rgba(255, 250, 243, 1),
+				rgba(255, 242, 242, 0.85)
+			);
+		}
+	}
+
+	// suppress hover image scaling inside the editor for stability
+	.aui__media-frame:hover .aui__image {
+		transform: none;
+	}
+}

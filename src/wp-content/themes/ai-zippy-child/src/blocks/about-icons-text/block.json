@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/about-icons-text",
+  "version": "1.0.0",
+  "title": "About Icons Text",
+  "category": "ai-zippy",
+  "icon": "screenoptions",
+  "description": "A beautiful grid of icon-text items with customizable background, colors, and layout.",
+  "keywords": ["about", "icons", "grid", "features"],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": { "padding": true, "margin": true }
+  },
+  "attributes": {
+    "items": {
+      "type": "array",
+      "default": [
+        { "iconUrl": "", "iconId": 0, "heading": "Our Vision", "text": "A sea of enlightened, beautiful and Healthy People", "iconBgColor": "#FFFAF3", "headingColor": "#3B2715", "textColor": "#615245" },
+        { "iconUrl": "", "iconId": 0, "heading": "Our Mission", "text": "To empower and enhance beauty, restore confidence, and support long-term health.", "iconBgColor": "#FFFAF3", "headingColor": "#3B2715", "textColor": "#615245" },
+        { "iconUrl": "", "iconId": 0, "heading": "Our Values", "text": "Integrity, innovation, and compassion in everything we do.", "iconBgColor": "#FFFAF3", "headingColor": "#3B2715", "textColor": "#615245" }
+      ]
+    },
+    "columns": { "type": "number", "default": 3 },
+    "bgColor": { "type": "string", "default": "#ffffff" },
+    "bgImageUrl": { "type": "string", "default": "" },
+    "bgImageId": { "type": "number", "default": 0 },
+    "bgOverlayColor": { "type": "string", "default": "rgba(255,250,243,0.85)" },
+    "sectionHeading": { "type": "string", "default": "" },
+    "sectionHeadingColor": { "type": "string", "default": "#3B2715" }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
