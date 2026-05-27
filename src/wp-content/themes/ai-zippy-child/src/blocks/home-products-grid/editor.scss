@@ -1,0 +1,31 @@
+.wp-block-ai-zippy-home-products-grid {
+	.hpg__preview-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+		max-width: 1200px;
+		margin: 0 auto;
+
+		@media (min-width: 768px) {
+			grid-template-columns: repeat(var(--hpg-columns, 4), 1fr);
+		}
+	}
+
+	.hpg__preview-card {
+		background: rgba(255, 255, 255, 0.5);
+		border-radius: 8px;
+		padding: 1.5rem;
+		text-align: center;
+		border: 1px dashed rgba(0, 0, 0, 0.1);
+		aspect-ratio: 1 / 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&::after {
+			content: "Product";
+			font-size: 12px;
+			color: #999;
+		}
+	}
+}

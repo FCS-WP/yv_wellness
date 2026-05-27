@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/home-gallery",
+  "version": "1.0.0",
+  "title": "Home Gallery",
+  "category": "ai-zippy",
+  "icon": "format-gallery",
+  "description": "Horizontal scrolling image gallery with snap scrolling. Desktop shows 3 full + 2 half images, mobile shows 1 full + 2 half.",
+  "keywords": ["gallery", "carousel", "images", "scroll", "home"],
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false,
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Our Customer's Journey"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": "#7c4612"
+    },
+    "images": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "textdomain": "ai-zippy",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
