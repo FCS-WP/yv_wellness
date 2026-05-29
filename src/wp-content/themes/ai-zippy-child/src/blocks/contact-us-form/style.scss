@@ -1,0 +1,205 @@
+// Contact Us Form Block
+// BEM: .cuf
+
+.cuf {
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+}
+
+.cuf__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1100px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Info Cards
+.cuf__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cuf__card {
+  background-color: #FFFAF3;
+  border: 1px solid rgba(212, 197, 179, 0.4);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cuf__card-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  color: #7c4612;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.cuf__card-title {
+  font-family: 'Marcellus', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3B2715;
+  margin: 0 0 0.5rem;
+}
+
+.cuf__card-text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.9rem;
+  color: #615245;
+  margin: 0;
+
+  a {
+    color: #615245;
+    text-decoration: none;
+    transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      color: #7c4612;
+    }
+  }
+}
+
+// Form
+.cuf__form-wrap {
+  background-color: #FFFAF3;
+  border: 1px solid rgba(212, 197, 179, 0.4);
+  border-radius: 12px;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.cuf__form-title {
+  font-family: 'Marcellus', serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  color: #3B2715;
+  margin: 0 0 1.5rem;
+}
+
+.cuf__field {
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #3B2715;
+    margin-bottom: 0.4rem;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    color: #3B2715;
+    background-color: #ffffff;
+    border: 1.5px solid #d4c5b3;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:focus {
+      outline: none;
+      border-color: #7c4612;
+      box-shadow: 0 0 0 3px rgba(124, 70, 18, 0.08);
+    }
+
+    &::placeholder {
+      color: #a69585;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+}
+
+.cuf__field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cuf__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #FFFAF3;
+  background-color: #3B2715;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem 2rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background-color: #4a3520;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 39, 21, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// Feedback messages
+.cuf__feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  &--success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+  }
+
+  &--error {
+    background-color: rgba(229, 57, 53, 0.08);
+    color: #c62828;
+    border: 1px solid rgba(229, 57, 53, 0.2);
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .cuf__card,
+  .cuf__submit {
+    transition: none;
+  }
+  .cuf__field input,
+  .cuf__field textarea {
+    transition: none;
+  }
+}

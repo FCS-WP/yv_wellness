@@ -1,0 +1,8 @@
+// OEM Information Block — Editor-only styles
+
+.oem-info {
+	// Editor preview matches frontend layout
+	.oem-info__btn {
+		cursor: text; // indicates editable in editor
+	}
+}

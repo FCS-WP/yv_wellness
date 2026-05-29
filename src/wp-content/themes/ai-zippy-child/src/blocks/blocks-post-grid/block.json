@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/blocks-post-grid",
+  "version": "1.0.0",
+  "title": "Post Grid",
+  "category": "theme",
+  "icon": "grid-view",
+  "description": "Displays blog posts in a responsive grid with filtering and sorting options.",
+  "keywords": ["posts", "blog", "grid", "articles"],
+  "supports": {
+    "html": false,
+    "spacing": { "margin": true, "padding": true },
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "title": { "type": "string", "default": "" },
+    "columns": { "type": "number", "default": 3 },
+    "postsPerPage": { "type": "number", "default": 6 },
+    "orderBy": { "type": "string", "default": "date" },
+    "order": { "type": "string", "default": "DESC" },
+    "categories": { "type": "array", "default": [] },
+    "showFilter": { "type": "boolean", "default": true },
+    "showPostCount": { "type": "boolean", "default": true },
+    "excerptLines": { "type": "number", "default": 3 },
+    "bgColor": { "type": "string", "default": "#FFFAF3" },
+    "cardBgColor": { "type": "string", "default": "#ffffff" }
+  },
+  "textdomain": "ai-zippy-child",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

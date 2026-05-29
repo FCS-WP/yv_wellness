@@ -11,6 +11,7 @@ if ($bg_image_url) {
 $wrapper_attributes = get_block_wrapper_attributes([
     'class' => 'haib',
     'style' => $bg_style,
+    'data-animate' => 'fade-up',
 ]);
 ?>
 <section <?php echo $wrapper_attributes; ?>>

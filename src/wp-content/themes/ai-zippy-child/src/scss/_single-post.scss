@@ -1,0 +1,366 @@
+@use "variables" as *;
+
+// === GLOBAL: Remove WordPress default block spacing on single posts ===
+body.single-post {
+  .wp-site-blocks {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  // Zero out padding on direct wrapper groups EXCEPT the article
+  .wp-site-blocks > .wp-block-group:not(.single-post-article) {
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  // Override WordPress constrained layout padding on article
+  .wp-site-blocks .single-post-article.wp-block-group.is-layout-constrained {
+    max-width: 960px !important;
+    margin: 0 auto !important;
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2rem) !important;
+  }
+
+  @include until(md) {
+    .wp-site-blocks .single-post-article.wp-block-group.is-layout-constrained {
+      padding: 30px 10px !important;
+    }
+  }
+
+  // Disable banner animation on single post - show immediately
+  .bhp[data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.single-post-article__image {
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+}
+
+.single-post-article__title {
+  font-family: $font-heading;
+  font-size: $fs-xlarge;
+  color: $c-accent;
+  line-height: 1.3;
+  margin: 0 0 1rem;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.single-post-article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(212, 197, 179, 0.4);
+  font-family: $font-body;
+  font-size: $fs-small;
+  color: $c-medium-brown;
+  text-align: center;
+
+  a {
+    color: $c-medium-brown;
+    text-decoration: none;
+    transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover { color: #7c4612; }
+  }
+
+  // Bullet separators between meta items
+  > .wp-block-group,
+  > *:not(:first-child) {
+    &::before {
+      content: "\2022";
+      margin-right: 0.75rem;
+      color: rgba(97, 82, 69, 0.4);
+    }
+  }
+}
+
+.single-post-article__content {
+  font-family: $font-body;
+  font-size: $fs-medium;
+  color: $c-accent;
+  line-height: 1.8;
+
+  p, li, blockquote { color: $c-accent; }
+
+  h2, h3, h4, h5, h6 {
+    font-family: $font-heading;
+    color: $c-accent;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  a {
+    color: #7c4612;
+    text-decoration: underline;
+    transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover { color: $c-accent; }
+  }
+
+  img {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+  }
+
+  ul, ol {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  blockquote {
+    border-left: 3px solid #7c4612;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: $c-medium-brown;
+  }
+}
+
+// === ARTICLE ENTRANCE ANIMATIONS ===
+// Fade-up effect for article sections (matches site animation style)
+@keyframes singlePostFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.single-post-article__image {
+  animation: singlePostFadeUp 700ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 200ms;
+}
+
+.single-post-article__title {
+  animation: singlePostFadeUp 700ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 350ms;
+}
+
+.single-post-article__meta {
+  animation: singlePostFadeUp 700ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 500ms;
+}
+
+.single-post-article__content {
+  animation: singlePostFadeUp 700ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 650ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .single-post-article__image,
+  .single-post-article__title,
+  .single-post-article__meta,
+  .single-post-article__content {
+    animation: none;
+  }
+}
+
+// === RELATED BLOGS CAROUSEL ===
+.single-post-related {
+  background-color: $c-light-cream;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 2rem);
+}
+
+.single-post-related__heading {
+  font-family: $font-heading;
+  font-size: $fs-xlarge;
+  color: $c-accent;
+  text-align: center;
+  margin: 0 0 2rem;
+}
+
+.single-post-related__carousel-wrap {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.single-post-related__carousel {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem 0 1rem;
+
+  // Hide scrollbar
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.single-post-related__card {
+  flex: 0 0 calc(25% - 1.125rem);
+  min-width: 260px;
+  scroll-snap-align: start;
+  background-color: #ffffff;
+  border: 1px solid rgba(212, 197, 179, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(59, 39, 21, 0.1);
+  }
+}
+
+.single-post-related__card-link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.single-post-related__card-image {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background-color: rgba(212, 197, 179, 0.2);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.single-post-related__card:hover .single-post-related__card-image img {
+  transform: scale(1.03);
+}
+
+.single-post-related__card-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(212, 197, 179, 0.35), rgba(97, 82, 69, 0.15));
+}
+
+.single-post-related__card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.single-post-related__card-title {
+  font-family: $font-heading;
+  font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.1rem);
+  color: $c-accent;
+  margin: 0 0 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.single-post-related__card-excerpt {
+  font-family: $font-body;
+  font-size: $fs-small;
+  color: $c-medium-brown;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Carousel navigation buttons
+.single-post-related__nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid rgba(212, 197, 179, 0.4);
+  box-shadow: 0 2px 8px rgba(59, 39, 21, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background-color: $c-light-cream;
+    box-shadow: 0 4px 12px rgba(59, 39, 21, 0.15);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: $c-accent;
+  }
+
+  &--prev { left: -20px; }
+  &--next { right: -20px; }
+}
+
+// Responsive
+@include until(lg) {
+  .single-post-related__card {
+    flex: 0 0 calc(33.333% - 1rem);
+  }
+  .single-post-related__nav-btn {
+    &--prev { left: 4px; }
+    &--next { right: 4px; }
+  }
+}
+
+@include until(md) {
+  .single-post-related__card {
+    flex: 0 0 calc(80% - 0.75rem);
+    min-width: 240px;
+  }
+  .single-post-related__nav-btn {
+    width: 32px;
+    height: 32px;
+    svg { width: 14px; height: 14px; }
+  }
+  .single-post-related__card-excerpt {
+    -webkit-line-clamp: 5;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .single-post-related__card,
+  .single-post-related__card-image img,
+  .single-post-related__nav-btn,
+  .single-post-related__carousel {
+    transition: none;
+    scroll-behavior: auto;
+  }
+}

@@ -560,10 +560,10 @@
     @include transition(background);
 
     &:hover {
-      background: darken(#f5f5f5, 5%);
+      background: #e8e8e8; // pre-computed darken(#f5f5f5, 5%)
     }
     &:active {
-      background: darken(#f5f5f5, 8%);
+      background: #e1e1e1; // pre-computed darken(#f5f5f5, 8%)
     }
   }
 

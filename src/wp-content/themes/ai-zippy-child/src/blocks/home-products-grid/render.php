@@ -65,6 +65,7 @@ $products_query = new WP_Query($query_args);
 $wrapper_attributes = get_block_wrapper_attributes([
     'class' => 'hpg',
     'style' => $bg_style,
+    'data-animate' => 'fade-up',
 ]);
 ?>
 <section <?php echo $wrapper_attributes; ?>>
@@ -84,7 +85,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
         $product_name = $product->get_name();
         $product_price = $product->get_price_html();
         ?>
-        <a href="<?php echo esc_url($product_url); ?>" class="hpg__card">
+        <a href="<?php echo esc_url($product_url); ?>" class="hpg__card hover-lift-sm hover-scale-sm">
           <div class="hpg__card-image">
             <?php if ($product_image) : ?>
               <img src="<?php echo esc_url($product_image); ?>" alt="<?php echo esc_attr($product_name); ?>" loading="lazy" />

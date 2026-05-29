@@ -3,14 +3,20 @@
 
 /* ==========================================================================
    Banner Header Page (.bhp)
-   Editorial / luxury page banner — used on every page except the homepage.
+   Editorial luxury page banner — gilded ornament, Marcellus heading,
+   gold accent rule, tracked-out breadcrumb. Used on every page except home.
    ========================================================================== */
+
+$bhp-gold: #c9a96e;
+$bhp-gold-soft: rgba(201, 169, 110, 0.55);
+$bhp-cream: #fffaf3;
 
 .bhp {
 	--bhp-min-height: 280px;
-	--bhp-pad-y: clamp(3rem, 4vw + 1rem, 6rem);
+	--bhp-pad-y: clamp(3.5rem, 5vw + 1rem, 6.5rem);
 	--bhp-pad-x: clamp(1.25rem, 4vw, 3rem);
 	--bhp-max-width: 64rem;
+	--bhp-gold: #{$bhp-gold};
 
 	position: relative;
 	display: flex;
@@ -20,6 +26,7 @@
 	padding: var(--bhp-pad-y) var(--bhp-pad-x);
 	overflow: hidden;
 	text-align: center;
+	background-color: #3b2715;
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -32,7 +39,7 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		height: 70px;
+		height: 90px;
 		pointer-events: none;
 		z-index: 2;
 	}
@@ -41,7 +48,7 @@
 		top: 0;
 		background: linear-gradient(
 			to bottom,
-			rgba(0, 0, 0, 0.18),
+			rgba(0, 0, 0, 0.28),
 			rgba(0, 0, 0, 0)
 		);
 	}
@@ -50,9 +57,14 @@
 		bottom: 0;
 		background: linear-gradient(
 			to top,
-			rgba(0, 0, 0, 0.22),
+			rgba(0, 0, 0, 0.28),
 			rgba(0, 0, 0, 0)
 		);
+	}
+
+	@include until(lg) {
+		--bhp-min-height: 240px;
+		--bhp-pad-y: clamp(2.75rem, 6vw, 4.5rem);
 	}
 
 	@include until(md) {
@@ -61,7 +73,7 @@
 
 		&::before,
 		&::after {
-			height: 40px;
+			height: 50px;
 		}
 	}
 }
@@ -86,34 +98,77 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: clamp(0.75rem, 1.2vw, 1.25rem);
+	gap: clamp(0.85rem, 1.4vw, 1.4rem);
 }
 
-/* Decorative ornament — thin centered hairline above the heading. */
+/* --------------------------------------------------------------------------
+   Ornament — gilded lotus glyph flanked by two horizontal hairlines.
+   -------------------------------------------------------------------------- */
 .bhp__ornament {
-	display: block;
-	width: clamp(36px, 6vw, 64px);
-	height: 1px;
-	background: currentColor;
-	opacity: 0.55;
-	margin-bottom: 0.25rem;
-	color: $c-white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: clamp(0.75rem, 1.6vw, 1.25rem);
+	width: min(440px, 82%);
+	margin: 0 auto 0.15rem;
+	color: $bhp-gold;
+	line-height: 1;
+}
 
-	@include until(md) {
-		width: 32px;
+.bhp__ornament-line {
+	flex: 1 1 auto;
+	height: 1px;
+	background: linear-gradient(
+		to right,
+		rgba(201, 169, 110, 0) 0%,
+		rgba(201, 169, 110, 0.85) 35%,
+		rgba(201, 169, 110, 0.85) 65%,
+		rgba(201, 169, 110, 0) 100%
+	);
+
+	&--left {
+		background: linear-gradient(
+			to right,
+			rgba(201, 169, 110, 0) 0%,
+			rgba(201, 169, 110, 0.85) 100%
+		);
+	}
+
+	&--right {
+		background: linear-gradient(
+			to right,
+			rgba(201, 169, 110, 0.85) 0%,
+			rgba(201, 169, 110, 0) 100%
+		);
 	}
 }
 
-/* Heading — Marcellus serif, large fluid sizing, elegant tracking. */
+.bhp__ornament-icon {
+	width: clamp(36px, 4vw, 48px);
+	height: clamp(36px, 4vw, 48px);
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Heading — Marcellus serif, large fluid sizing.
+   -------------------------------------------------------------------------- */
+.bhp__heading-group {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(0.75rem, 1.1vw, 1.1rem);
+}
+
 .bhp__heading {
 	margin: 0;
 	font-family: $font-heading;
-	font-size: $fs-xxlarge;
+	font-size: clamp(2.5rem, 1.5rem + 4.25vw, 4rem);
 	font-weight: 400;
-	line-height: 1.1;
+	line-height: 1.05;
 	letter-spacing: 0.01em;
 	color: $c-white;
-	text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+	text-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
 	word-break: break-word;
 
 	em {
@@ -127,51 +182,65 @@
 
 	@include until(md) {
 		letter-spacing: 0.005em;
+		font-size: clamp(2rem, 1.25rem + 5vw, 2.75rem);
 	}
 }
 
-/* Breadcrumb — refined small caps-feel with elegant separators. */
+/* Gold accent rule under the heading. */
+.bhp__heading-accent {
+	display: block;
+	width: clamp(44px, 4vw, 56px);
+	height: 2px;
+	background: $bhp-gold;
+	border-radius: 2px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   Breadcrumb — Raleway tracked-out small caps in cream.
+   -------------------------------------------------------------------------- */
 .bhp__breadcrumb {
 	margin: 0;
 	font-family: $font-body;
 	font-size: clamp(0.75rem, 0.65rem + 0.4vw, 0.95rem);
-	font-weight: 400;
-	letter-spacing: 0.18em;
+	font-weight: 500;
+	letter-spacing: 0.32em;
 	text-transform: uppercase;
-	color: rgba(255, 255, 255, 0.85);
+	color: $bhp-cream;
 	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
 	max-width: 90%;
 
 	a {
 		color: inherit;
 		text-decoration: none;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+		border-bottom: 1px solid rgba(255, 250, 243, 0.3);
 		padding-bottom: 1px;
 		transition: border-color 0.25s ease, color 0.25s ease;
 
 		&:hover,
 		&:focus-visible {
-			color: $c-light-cream;
+			color: $bhp-gold;
 			border-bottom-color: currentColor;
 		}
 	}
 
 	em {
 		font-style: italic;
-		letter-spacing: 0.12em;
+		letter-spacing: 0.18em;
 	}
 
 	@include until(md) {
-		letter-spacing: 0.14em;
+		letter-spacing: 0.24em;
 	}
 }
 
-/* When a background image is present, slightly lift the heading via
-   a stronger drop-shadow for guaranteed legibility. */
+/* --------------------------------------------------------------------------
+   Variants based on background presence.
+   -------------------------------------------------------------------------- */
 .bhp.bhp--has-image {
 	.bhp__heading {
-		text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55),
-			0 1px 2px rgba(0, 0, 0, 0.35);
+		text-shadow: 0 2px 22px rgba(0, 0, 0, 0.6),
+			0 1px 2px rgba(0, 0, 0, 0.4);
 	}
 
 	.bhp__breadcrumb {
@@ -179,9 +248,76 @@
 	}
 }
 
-/* Solid (no-image) variant: soften overlay default look. */
 .bhp.bhp--solid {
 	.bhp__overlay {
 		mix-blend-mode: multiply;
+	}
+}
+
+/* ==========================================================================
+   Entrance animations — content only (background stays static).
+   Stagger fade-up: ornament → heading → accent → breadcrumb.
+   ========================================================================== */
+@keyframes bannerContentFadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes bannerAccentReveal {
+	from {
+		opacity: 0;
+		transform: scaleX(0.2);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+.bhp__ornament,
+.bhp__heading,
+.bhp__breadcrumb {
+	opacity: 0;
+	will-change: opacity, transform;
+	animation: bannerContentFadeUp 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.bhp__heading-accent {
+	opacity: 0;
+	transform-origin: center;
+	will-change: opacity, transform;
+	animation: bannerAccentReveal 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.bhp__ornament {
+	animation-delay: 200ms;
+}
+
+.bhp__heading {
+	animation-delay: 380ms;
+}
+
+.bhp__heading-accent {
+	animation-delay: 560ms;
+}
+
+.bhp__breadcrumb {
+	animation-delay: 720ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bhp__ornament,
+	.bhp__heading,
+	.bhp__heading-accent,
+	.bhp__breadcrumb {
+		animation: none;
+		opacity: 1;
+		transform: none;
 	}
 }

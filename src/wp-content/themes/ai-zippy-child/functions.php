@@ -144,3 +144,116 @@ add_action('init', function (): void {
         register_block_type(dirname($block_json));
     }
 });
+
+// =============================================================================
+// Contact Form REST API endpoint.
+// =============================================================================
+
+add_action('rest_api_init', function () {
+    register_rest_route('ai-zippy/v1', '/contact-submit', [
+        'methods'             => 'POST',
+        'callback'            => 'ai_zippy_handle_contact_form',
+        'permission_callback' => '__return_true',
+    ]);
+});
+
+if (!function_exists('ai_zippy_handle_contact_form')) {
+    function ai_zippy_handle_contact_form(WP_REST_Request $request) {
+        $params = $request->get_json_params();
+
+        $name      = sanitize_text_field($params['name'] ?? '');
+        $email     = sanitize_email($params['email'] ?? '');
+        $phone     = sanitize_text_field($params['phone'] ?? '');
+        $subject   = sanitize_text_field($params['subject'] ?? 'New Contact Form Submission');
+        $message   = sanitize_textarea_field($params['message'] ?? '');
+        $recipient = sanitize_email($params['recipient'] ?? 'yvwellnesssgp@gmail.com');
+
+        // Validate required fields
+        if (empty($name) || empty($email) || empty($message)) {
+            return new WP_REST_Response([
+                'status'  => 'error',
+                'message' => 'Please fill in all required fields (name, email, message).',
+            ], 400);
+        }
+
+        if (!is_email($email)) {
+            return new WP_REST_Response([
+                'status'  => 'error',
+                'message' => 'Please provide a valid email address.',
+            ], 400);
+        }
+
+        // Build email
+        $email_subject = '[YV Wellness Contact] ' . ($subject ?: 'New Inquiry');
+        $email_body    = "New contact form submission:\n\n";
+        $email_body   .= "Name: {$name}\n";
+        $email_body   .= "Email: {$email}\n";
+        if ($phone) {
+            $email_body .= "Phone: {$phone}\n";
+        }
+        $email_body .= "Subject: {$subject}\n\n";
+        $email_body .= "Message:\n{$message}\n";
+
+        $headers = [
+            'Content-Type: text/plain; charset=UTF-8',
+            "Reply-To: {$name} <{$email}>",
+        ];
+
+        $sent = wp_mail($recipient, $email_subject, $email_body, $headers);
+
+        if ($sent) {
+            return new WP_REST_Response([
+                'status'  => 'success',
+                'message' => 'Thank you! Your message has been sent successfully.',
+            ], 200);
+        }
+
+        return new WP_REST_Response([
+            'status'  => 'error',
+            'message' => 'Failed to send email. Please try again later or contact us directly.',
+        ], 500);
+    }
+}
+
+// =============================================================================
+// Related posts helper for single post template.
+// =============================================================================
+
+/**
+ * Get related posts from the same category.
+ *
+ * @param int $post_id Current post ID.
+ * @param int $count   Number of related posts to return.
+ * @return WP_Post[] Array of related post objects.
+ */
+function ai_zippy_get_related_posts(int $post_id, int $count = 4): array {
+    $categories = wp_get_post_categories($post_id);
+
+    $args = [
+        'post_type'      => 'post',
+        'posts_per_page' => $count,
+        'post__not_in'   => [$post_id],
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'post_status'    => 'publish',
+    ];
+
+    // Filter by category if available
+    if (!empty($categories)) {
+        $args['category__in'] = $categories;
+    }
+
+    $query = new WP_Query($args);
+    $posts = $query->posts;
+    wp_reset_postdata();
+
+    // Fallback: if category filter returned nothing, get any recent posts
+    if (empty($posts) && !empty($categories)) {
+        unset($args['category__in']);
+        $query = new WP_Query($args);
+        $posts = $query->posts;
+        wp_reset_postdata();
+    }
+
+    return $posts;
+}

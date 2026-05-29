@@ -1,0 +1,18 @@
+// =============================================================================
+// Mobile overrides — global tightening for custom block sections (≤768px).
+//
+// Targets all `ai-zippy/*` custom blocks (auto-class `wp-block-ai-zippy-*`
+// added by `get_block_wrapper_attributes()`) and forces a uniform compact
+// padding on small screens.
+//
+// Excluded by design (full-bleed visuals own their own padding/height):
+//   - .hbh  → home-banner-header
+//   - .bhp  → banner-header-page
+//   - .hg   → home-gallery (full-width drag-to-scroll carousel)
+// =============================================================================
+
+@media (max-width: 767.98px) {
+  [class*="wp-block-ai-zippy-"]:not(.hbh):not(.bhp):not(.hg) {
+    padding: 30px 10px !important;
+  }
+}

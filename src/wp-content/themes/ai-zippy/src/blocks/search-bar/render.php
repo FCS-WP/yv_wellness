@@ -49,7 +49,7 @@ $icon_markup = $icon_url
 		</button>
 
 		<!-- Full-page modal (shown on trigger click) -->
-		<div class="zs__modal" id="<?php echo esc_attr($uid); ?>-modal" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Search', 'ai-zippy'); ?>" hidden>
+		<div class="zs__modal search-bar__modal" id="<?php echo esc_attr($uid); ?>-modal" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Search', 'ai-zippy'); ?>" hidden>
 			<div class="zs__modal-backdrop"></div>
 			<div class="zs__modal-inner">
 				<div class="zs__input-wrap">

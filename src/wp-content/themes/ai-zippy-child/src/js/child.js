@@ -4,7 +4,12 @@
 // client overrides or new features that don't belong in core.
 // =============================================================================
 
-// Example:
-// import "./modules/client-hero.js";
+import { initScrollReveal } from './modules/scroll-reveal.js';
+import { initMobileMenu } from './modules/mobile-menu.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollReveal();
+  initMobileMenu();
+});
 
 console.log("[ai-zippy-child] loaded");

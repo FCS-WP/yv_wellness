@@ -1,0 +1,43 @@
+// Events Gallery Block — Editor-only styles
+
+.eg {
+  .eg__item-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+    align-items: center;
+
+    .components-text-control__input {
+      min-width: 150px;
+    }
+
+    .components-select-control__input {
+      min-width: 100px;
+    }
+  }
+
+  .eg__item-actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .eg__add-wrap {
+    margin-top: 1rem;
+    text-align: center;
+    padding: 2rem;
+    border: 2px dashed #d4c5b3;
+    border-radius: 12px;
+    background: #fffaf3;
+  }
+
+  .eg__overlay {
+    // Always show overlay preview faintly in editor
+    opacity: 0.3;
+  }
+
+  .eg__caption {
+    transform: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/oem-information",
+  "version": "1.0.0",
+  "title": "OEM Information",
+  "category": "theme",
+  "icon": "businessperson",
+  "description": "A CTA block for OEM/ODM partnership information with heading, description, and contact button.",
+  "keywords": ["oem", "odm", "partner", "cta"],
+  "supports": {
+    "html": false,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Interested in partnering with us?"
+    },
+    "headingColor": {
+      "type": "string",
+      "default": "#3B2715"
+    },
+    "body": {
+      "type": "string",
+      "default": "Partner with us to bring innovative beauty and wellness technology to your brand. Our OEM/ODM solutions allow businesses to develop and market high-quality devices under their own branding, supported by patented technology, proven results, and reliable manufacturing expertise. Whether you are looking to expand your product line or launch a new beauty technology brand, we provide the support needed to turn your vision into market-ready solutions."
+    },
+    "bodyColor": {
+      "type": "string",
+      "default": "#615245"
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Get in touch with us to explore OEM/ODM opportunities and reseller partnerships."
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": "tel:96384686"
+    },
+    "buttonTextColor": {
+      "type": "string",
+      "default": "#FFFAF3"
+    },
+    "buttonBgColor": {
+      "type": "string",
+      "default": "#3B2715"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#FFFAF3"
+    }
+  },
+  "textdomain": "ai-zippy-child",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

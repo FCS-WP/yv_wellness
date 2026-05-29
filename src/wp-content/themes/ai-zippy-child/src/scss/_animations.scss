@@ -1,0 +1,223 @@
+// ==========================================================================
+// Material Scroll Animation System
+// JS toggles .is-visible; CSS handles all visuals.
+// Only transform + opacity animated (GPU composited).
+// ==========================================================================
+
+// --- Easing Tokens ---
+$ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ==========================================================================
+// REVEAL ANIMATIONS (scroll-triggered via IntersectionObserver)
+// ==========================================================================
+
+[data-animate="fade-up"] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms $ease-standard, transform 700ms $ease-standard;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[data-animate="fade-in"] {
+  opacity: 0;
+  transition: opacity 600ms $ease-standard;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
+[data-animate="slide-left"] {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 700ms $ease-standard, transform 700ms $ease-standard;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+[data-animate="slide-right"] {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 700ms $ease-standard, transform 700ms $ease-standard;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Immediate — above-the-fold heroes, no scroll wait
+[data-animate="immediate"] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 800ms $ease-standard, transform 800ms $ease-standard;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================================================
+// STAGGER SUPPORT
+// ==========================================================================
+
+.stagger-group > [data-animate-child] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms $ease-standard, transform 600ms $ease-standard;
+  transition-delay: calc(var(--stagger-index, 0) * 120ms);
+}
+
+.stagger-group.is-visible > [data-animate-child] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+// ==========================================================================
+// HOVER MICRO-INTERACTIONS
+// ==========================================================================
+
+// Lift-on-hover (cards, buttons)
+.hover-lift-sm {
+  transition: transform 200ms $ease-standard, box-shadow 200ms $ease-standard;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.hover-lift-md {
+  transition: transform 200ms $ease-standard, box-shadow 200ms $ease-standard;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.hover-lift-lg {
+  transition: transform 200ms $ease-standard, box-shadow 200ms $ease-standard;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// Scale-on-hover (images, gallery items)
+.hover-scale-sm {
+  transition: transform 250ms $ease-standard;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.hover-scale-md {
+  transition: transform 250ms $ease-standard;
+
+  &:hover {
+    transform: scale(1.06);
+  }
+}
+
+.hover-scale-lg {
+  transition: transform 250ms $ease-standard;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// ==========================================================================
+// SEARCH MODAL — springy entrance
+// ==========================================================================
+
+.search-bar__modal {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  transition: opacity 300ms $ease-spring, transform 300ms $ease-spring;
+  pointer-events: none;
+
+  &.is-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+}
+
+// ==========================================================================
+// UTILITY ANIMATIONS (loaders, skeletons)
+// ==========================================================================
+
+// Spinning loader
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.is-loading .spinner {
+  animation: spin 800ms linear infinite;
+}
+
+// Shimmer skeleton
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0ebe5 25%, #faf5ef 50%, #f0ebe5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s $ease-standard infinite;
+  border-radius: 4px;
+}
+
+// ==========================================================================
+// REDUCED MOTION — accessibility
+// ==========================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  .stagger-group > [data-animate-child] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .hover-lift-sm,
+  .hover-lift-md,
+  .hover-lift-lg,
+  .hover-scale-sm,
+  .hover-scale-md,
+  .hover-scale-lg {
+    transition: none !important;
+  }
+
+  .search-bar__modal {
+    transition: none !important;
+  }
+
+  .skeleton {
+    animation: none;
+  }
+
+  .is-loading .spinner {
+    animation: none;
+  }
+}
