@@ -79,6 +79,24 @@ $section_index = 0;
 ?>
 <section <?php echo $wrapper_attributes; ?> data-animate="fade-up">
 
+    <form class="search-results__form" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+        <label class="search-results__form-label" for="search-results-input">
+            <span class="screen-reader-text"><?php esc_html_e('Search', 'ai-zippy-child'); ?></span>
+            <svg class="search-results__form-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+            <input id="search-results-input"
+                   type="search"
+                   class="search-results__input"
+                   name="s"
+                   value="<?php echo esc_attr($search_query); ?>"
+                   placeholder="<?php esc_attr_e('Search products, posts, pages…', 'ai-zippy-child'); ?>"
+                   autocomplete="off" />
+        </label>
+        <button type="submit" class="search-results__submit">
+            <span><?php esc_html_e('Search', 'ai-zippy-child'); ?></span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
+        </button>
+    </form>
+
     <?php if ($total_results === 0) : ?>
         <div class="search-results__empty" data-animate="fade-up">
             <div class="search-results__empty-ornament" aria-hidden="true">
