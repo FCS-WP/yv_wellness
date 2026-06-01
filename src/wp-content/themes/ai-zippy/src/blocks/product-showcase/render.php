@@ -57,6 +57,7 @@ if (empty($products)) {
 
 $wrapper_attributes = get_block_wrapper_attributes([
     'class' => 'ps ps--' . $display_style,
+    'data-animate' => 'fade-up',
 ]);
 
 // Slider data attributes
@@ -101,7 +102,7 @@ $card_opts = [
             <div class="swiper-wrapper">
                 <?php foreach ($products as $product) : ?>
                     <div class="swiper-slide">
-                        <?php echo \AiZippy\Product\Cards::render($product, 'full', $card_opts); ?>
+                        <?php echo str_replace('class="sf__card"', 'class="sf__card hover-lift-sm hover-scale-sm"', \AiZippy\Product\Cards::render($product, 'full', $card_opts)); ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -110,7 +111,7 @@ $card_opts = [
     <?php else : ?>
         <div class="ps__grid" style="grid-template-columns: repeat(<?php echo (int) $columns; ?>, 1fr);">
             <?php foreach ($products as $product) : ?>
-                <?php echo \AiZippy\Product\Cards::render($product, 'full', $card_opts); ?>
+                <?php echo str_replace('class="sf__card"', 'class="sf__card hover-lift-sm hover-scale-sm"', \AiZippy\Product\Cards::render($product, 'full', $card_opts)); ?>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>

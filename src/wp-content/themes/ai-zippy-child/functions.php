@@ -144,3 +144,155 @@ add_action('init', function (): void {
         register_block_type(dirname($block_json));
     }
 });
+
+// =============================================================================
+// Contact Form REST API endpoint.
+// =============================================================================
+
+add_action('rest_api_init', function () {
+    register_rest_route('ai-zippy/v1', '/contact-submit', [
+        'methods'             => 'POST',
+        'callback'            => 'ai_zippy_handle_contact_form',
+        'permission_callback' => '__return_true',
+    ]);
+});
+
+if (!function_exists('ai_zippy_handle_contact_form')) {
+    function ai_zippy_handle_contact_form(WP_REST_Request $request) {
+        try {
+            $params = $request->get_json_params();
+
+            $name      = sanitize_text_field($params['name'] ?? '');
+            $email     = sanitize_email($params['email'] ?? '');
+            $phone     = sanitize_text_field($params['phone'] ?? '');
+            $subject   = sanitize_text_field($params['subject'] ?? 'New Contact Form Submission');
+            $message   = sanitize_textarea_field($params['message'] ?? '');
+            $recipient = sanitize_email($params['recipient'] ?? 'yvwellnesssgp@gmail.com');
+
+            // Validate required fields
+            if (empty($name) || empty($email) || empty($message)) {
+                return new WP_REST_Response([
+                    'status'  => 'error',
+                    'message' => 'Please fill in all required fields (name, email, message).',
+                ], 400);
+            }
+
+            if (!is_email($email)) {
+                return new WP_REST_Response([
+                    'status'  => 'error',
+                    'message' => 'Please provide a valid email address.',
+                ], 400);
+            }
+
+            // Store submission in database (never lose a message)
+            $submission = [
+                'name'      => $name,
+                'email'     => $email,
+                'phone'     => $phone,
+                'subject'   => $subject,
+                'message'   => $message,
+                'recipient' => $recipient,
+                'date'      => current_time('mysql'),
+                'mail_sent' => false,
+            ];
+
+            $submissions = get_option('ai_zippy_contact_submissions', []);
+            $submissions[] = $submission;
+            // Keep last 100 submissions
+            if (count($submissions) > 100) {
+                $submissions = array_slice($submissions, -100);
+            }
+            update_option('ai_zippy_contact_submissions', $submissions);
+
+            // Attempt to send email
+            $email_subject = '[YV Wellness Contact] ' . ($subject ?: 'New Inquiry');
+            $email_body    = "New contact form submission:\n\n";
+            $email_body   .= "Name: {$name}\n";
+            $email_body   .= "Email: {$email}\n";
+            if ($phone) {
+                $email_body .= "Phone: {$phone}\n";
+            }
+            $email_body .= "Subject: {$subject}\n\n";
+            $email_body .= "Message:\n{$message}\n";
+
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                "Reply-To: {$name} <{$email}>",
+            ];
+
+            // Capture mail errors
+            $mail_error = '';
+            add_action('wp_mail_failed', function($wp_error) use (&$mail_error) {
+                $mail_error = $wp_error->get_error_message();
+            });
+
+            $sent = wp_mail($recipient, $email_subject, $email_body, $headers);
+
+            if (!$sent) {
+                error_log('Contact form: wp_mail() failed. Error: ' . $mail_error . ' | From: ' . $email);
+            }
+
+            // Always return success since we stored the submission
+            return new WP_REST_Response([
+                'status'  => 'success',
+                'message' => 'Thank you! Your message has been received successfully.',
+            ], 200);
+
+        } catch (\Exception $e) {
+            error_log('Contact form exception: ' . $e->getMessage());
+            return new WP_REST_Response([
+                'status'  => 'error',
+                'message' => 'An error occurred while processing your request. Please try again.',
+            ], 500);
+        } catch (\Error $e) {
+            error_log('Contact form fatal error: ' . $e->getMessage());
+            return new WP_REST_Response([
+                'status'  => 'error',
+                'message' => 'An error occurred while processing your request. Please try again.',
+            ], 500);
+        }
+    }
+}
+
+// =============================================================================
+// Related posts helper for single post template.
+// =============================================================================
+
+/**
+ * Get related posts from the same category.
+ *
+ * @param int $post_id Current post ID.
+ * @param int $count   Number of related posts to return.
+ * @return WP_Post[] Array of related post objects.
+ */
+function ai_zippy_get_related_posts(int $post_id, int $count = 4): array {
+    $categories = wp_get_post_categories($post_id);
+
+    $args = [
+        'post_type'      => 'post',
+        'posts_per_page' => $count,
+        'post__not_in'   => [$post_id],
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'post_status'    => 'publish',
+    ];
+
+    // Filter by category if available
+    if (!empty($categories)) {
+        $args['category__in'] = $categories;
+    }
+
+    $query = new WP_Query($args);
+    $posts = $query->posts;
+    wp_reset_postdata();
+
+    // Fallback: if category filter returned nothing, get any recent posts
+    if (empty($posts) && !empty($categories)) {
+        unset($args['category__in']);
+        $query = new WP_Query($args);
+        $posts = $query->posts;
+        wp_reset_postdata();
+    }
+
+    return $posts;
+}

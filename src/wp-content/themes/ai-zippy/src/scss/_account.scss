@@ -397,7 +397,7 @@ $ma-gap:         1.5rem;
 
   &--orders { background: rgba(33,150,243,0.1); color: #1976d2; }
   &--spent  { background: rgba(76,175,80,0.1);  color: #388e3c; }
-  &--last   { background: rgba(200,169,126,0.15); color: darken(#c8a97e, 10%); }
+  &--last   { background: rgba(200,169,126,0.15); color: #ba925a; } // pre-computed darken(#c8a97e, 10%)
 }
 
 .ma__dash-stat-body {
@@ -1102,7 +1102,7 @@ $ma-gap:         1.5rem;
   }
 
   &:hover {
-    border-color: darken(#e5e5e5, 8%);
+    border-color: #d1d1d1; // pre-computed darken(#e5e5e5, 8%)
   }
 
   &:focus {

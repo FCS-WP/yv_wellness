@@ -5,6 +5,7 @@ export default function FilterPanel({
 	filters,
 	onSearch,
 	onToggleCategory,
+	onClearCategory,
 	onToggleAttribute,
 	onPriceChange,
 	onStockChange,
@@ -52,16 +53,15 @@ export default function FilterPanel({
 					/>
 				</div>
 
-				{/* Categories */}
-				{options.categories.length > 0 && (
-					<FilterSection title="Categories" defaultOpen>
-						<CategoryList
-							categories={options.categories}
-							selected={selectedCategories}
-							onToggle={onToggleCategory}
-						/>
-					</FilterSection>
-				)}
+				{/* Categories — always rendered so shoppers can reset to "All Categories" */}
+				<FilterSection title="Category" defaultOpen>
+					<CategoryList
+						categories={options.categories || []}
+						selected={selectedCategories}
+						onToggle={onToggleCategory}
+						onClearAll={onClearCategory}
+					/>
+				</FilterSection>
 
 				{/* Price Range */}
 				<FilterSection title="Price" defaultOpen>
@@ -175,11 +175,23 @@ function SearchInput({ defaultValue, onChange }) {
 	);
 }
 
-function CategoryList({ categories, selected, onToggle }) {
+function CategoryList({ categories, selected, onToggle, onClearAll }) {
 	// Build tree structure
 	const roots = categories.filter((c) => c.parent === 0);
 	const children = (parentId) =>
 		categories.filter((c) => c.parent === parentId);
+
+	const noneSelected = selected.length === 0;
+	const totalCount = categories.reduce(
+		(sum, c) => sum + (Number(c.count) || 0),
+		0,
+	);
+
+	const handleClearAll = () => {
+		if (typeof onClearAll === "function") {
+			onClearAll();
+		}
+	};
 
 	const renderItem = (cat) => (
 		<li key={cat.slug}>
@@ -200,7 +212,25 @@ function CategoryList({ categories, selected, onToggle }) {
 		</li>
 	);
 
-	return <ul className="sf__cat-list">{roots.map(renderItem)}</ul>;
+	return (
+		<ul className="sf__cat-list">
+			<li className="sf__cat-all">
+				<label className="sf__checkbox sf__checkbox--all">
+					<input
+						type="radio"
+						name="sf-category-all"
+						checked={noneSelected}
+						onChange={handleClearAll}
+					/>
+					<span className="sf__checkbox-label">All Categories</span>
+					{totalCount > 0 && (
+						<span className="sf__checkbox-count">{totalCount}</span>
+					)}
+				</label>
+			</li>
+			{roots.map(renderItem)}
+		</ul>
+	);
 }
 
 function PriceRange({ min, max, currentMin, currentMax, onChange }) {

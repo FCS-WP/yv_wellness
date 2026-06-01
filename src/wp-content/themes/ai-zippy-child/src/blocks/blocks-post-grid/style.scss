@@ -1,0 +1,208 @@
+/**
+ * Post Grid Block — Frontend styles.
+ *
+ * Hardcoded design-system values are used here because wp-scripts compiles
+ * each block's SCSS in isolation, without access to the theme's _variables.scss.
+ *
+ * Design tokens mirrored:
+ *   $c-accent         #3B2715
+ *   $c-medium-brown   #615245
+ *   $c-light-cream    #FFFAF3
+ *   $font-heading     'Marcellus', serif
+ *   $font-body        'Raleway', sans-serif
+ *   $bp-md            768px
+ *   $bp-lg            1024px
+ */
+
+$bpg-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+.bpg {
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+  background-color: var(--bpg-bg, #FFFAF3);
+}
+
+.bpg__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+}
+
+.bpg__count {
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #615245;
+  letter-spacing: 0.02em;
+}
+
+.bpg__filter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.bpg__filter .bpg__select,
+.bpg__filter select {
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #3B2715;
+  background-color: #ffffff;
+  border: 1.5px solid #d4c5b3;
+  border-radius: 8px;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%233B2715' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  cursor: pointer;
+  transition: border-color 250ms $bpg-easing, box-shadow 250ms $bpg-easing;
+}
+
+.bpg__filter .bpg__select:hover,
+.bpg__filter select:hover {
+  border-color: #7c4612;
+}
+
+.bpg__filter .bpg__select:focus,
+.bpg__filter select:focus {
+  outline: none;
+  border-color: #7c4612;
+  box-shadow: 0 0 0 3px rgba(124, 70, 18, 0.08);
+}
+
+.bpg__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--bpg-columns, 3), 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .bpg__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .bpg__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bpg__card {
+  background-color: var(--bpg-card-bg, #ffffff);
+  border: 1px solid rgba(212, 197, 179, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 250ms $bpg-easing,
+              box-shadow 250ms $bpg-easing;
+}
+
+.bpg__card-link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.bpg__card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(59, 39, 21, 0.1);
+}
+
+.bpg__card:hover .bpg__card-image img {
+  transform: scale(1.03);
+}
+
+.bpg__card-image {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background-color: rgba(212, 197, 179, 0.2);
+}
+
+.bpg__card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 400ms $bpg-easing;
+}
+
+.bpg__card-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(212, 197, 179, 0.35), rgba(97, 82, 69, 0.15));
+}
+
+.bpg__card-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bpg__card-title {
+  font-family: 'Marcellus', serif;
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  font-weight: 400;
+  color: #3B2715;
+  margin: 0 0 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.bpg__card-excerpt {
+  font-family: 'Raleway', sans-serif;
+  font-size: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
+  font-weight: 400;
+  color: #615245;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--bpg-excerpt-lines, 3);
+  line-clamp: var(--bpg-excerpt-lines, 3);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .bpg__card-excerpt {
+    -webkit-line-clamp: var(--bpg-excerpt-lines-mobile, 4);
+    line-clamp: var(--bpg-excerpt-lines-mobile, 4);
+  }
+}
+
+.bpg__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  color: #615245;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpg__card,
+  .bpg__card-image img,
+  .bpg__filter select,
+  .bpg__filter .bpg__select {
+    transition: none;
+  }
+}

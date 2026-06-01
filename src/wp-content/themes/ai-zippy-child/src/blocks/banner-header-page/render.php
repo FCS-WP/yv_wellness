@@ -79,7 +79,7 @@ if ( ! function_exists( 'ai_zippy_bhp_default_breadcrumb' ) ) {
 $heading          = isset( $attributes['heading'] ) ? $attributes['heading'] : '';
 $heading_color    = isset( $attributes['headingColor'] ) ? $attributes['headingColor'] : '#ffffff';
 $breadcrumb       = isset( $attributes['breadcrumb'] ) ? $attributes['breadcrumb'] : '';
-$breadcrumb_color = isset( $attributes['breadcrumbColor'] ) ? $attributes['breadcrumbColor'] : 'rgba(255,255,255,0.85)';
+$breadcrumb_color = isset( $attributes['breadcrumbColor'] ) ? $attributes['breadcrumbColor'] : 'rgba(255,250,243,0.88)';
 $bg_color         = isset( $attributes['bgColor'] ) ? $attributes['bgColor'] : '#3B2715';
 $bg_image_url     = isset( $attributes['bgImageUrl'] ) ? $attributes['bgImageUrl'] : '';
 $overlay_color    = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : 'rgba(59,39,21,0.65)';
@@ -94,12 +94,11 @@ $overlay_rgba = ai_zippy_bhp_build_overlay_rgba( $overlay_color, $overlay_opacit
 
 $style_parts = array(
 	'--bhp-min-height:' . $min_height . 'px',
+	'background-color:' . $bg_color,
 );
 
 if ( $bg_image_url ) {
 	$style_parts[] = 'background-image:url(' . esc_url_raw( $bg_image_url ) . ')';
-} else {
-	$style_parts[] = 'background-color:' . $bg_color;
 }
 
 $inline_style = implode( ';', $style_parts ) . ';';
@@ -114,10 +113,17 @@ $wrapper_attributes = get_block_wrapper_attributes(
 <section <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<span class="bhp__overlay" aria-hidden="true" style="background-color: <?php echo esc_attr( $overlay_rgba ); ?>;"></span>
 	<div class="bhp__content">
-		<span class="bhp__ornament" aria-hidden="true"></span>
-		<h1 class="bhp__heading" style="color: <?php echo esc_attr( $heading_color ); ?>;">
-			<?php echo wp_kses_post( $heading ); ?>
-		</h1>
+		<div class="bhp__ornament" aria-hidden="true">
+			<span class="bhp__ornament-line bhp__ornament-line--left"></span>
+			<img src="/wp-content/uploads/2026/05/6111824065201184804-removebg-preview.png" alt="" class="bhp__ornament-icon" aria-hidden="true" width="40" height="40" />
+			<span class="bhp__ornament-line bhp__ornament-line--right"></span>
+		</div>
+		<div class="bhp__heading-group">
+			<h1 class="bhp__heading" style="color: <?php echo esc_attr( $heading_color ); ?>;">
+				<?php echo wp_kses_post( $heading ); ?>
+			</h1>
+			<span class="bhp__heading-accent" aria-hidden="true"></span>
+		</div>
 		<p class="bhp__breadcrumb" style="color: <?php echo esc_attr( $breadcrumb_color ); ?>;">
 			<?php echo wp_kses_post( $breadcrumb ); ?>
 		</p>

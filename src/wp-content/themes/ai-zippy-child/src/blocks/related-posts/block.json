@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy/related-posts",
+  "version": "1.0.0",
+  "title": "Related Posts",
+  "category": "theme",
+  "icon": "admin-post",
+  "description": "Displays related posts from the same category, excluding the current post.",
+  "keywords": ["related", "posts", "blog"],
+  "supports": { "html": false },
+  "attributes": {
+    "count": { "type": "number", "default": 4 },
+    "heading": { "type": "string", "default": "Related Blogs" }
+  },
+  "textdomain": "ai-zippy-child",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

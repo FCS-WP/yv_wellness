@@ -121,6 +121,7 @@ export default function ShopFilter({ config }) {
 					filters={filters}
 					onSearch={setSearch}
 					onToggleCategory={toggleCategory}
+					onClearCategory={() => updateFilter("category", "")}
 					onToggleAttribute={toggleAttribute}
 					onPriceChange={(min, max) => {
 						updateFilter("min_price", min);

@@ -46,6 +46,7 @@ $wrapper_classes = 'aui' . (!empty($bg_image_url) ? ' aui--has-bg' : '');
 $wrapper_attributes = get_block_wrapper_attributes([
     'class' => $wrapper_classes,
     'style' => implode('; ', $style_parts) . ';',
+    'data-animate' => 'fade-up',
 ]);
 ?>
 <section <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>

@@ -1,0 +1,170 @@
+// =============================================================================
+// Global form input styling — neutralizes default browser chrome and applies
+// the YV Wellness visual language to every text-style input across the site
+// (search field in the header, contact form, WooCommerce checkout, etc.).
+// =============================================================================
+
+$form-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+%yv-input-base {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #3B2715;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+  box-shadow: none !important;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color 300ms $form-ease;
+
+  &:hover {
+    border-color: rgba(59, 39, 21, 0.32);
+  }
+
+  &:focus,
+  &:focus-visible {
+    border-color: #3B2715;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  &::placeholder {
+    color: #a69585;
+    opacity: 1;
+  }
+
+  &:disabled {
+    background-color: #f7f3ec;
+    color: #a69585;
+    cursor: not-allowed;
+  }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+input[type="url"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+  @extend %yv-input-base;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+select {
+  // Restore a discreet caret since native chrome is removed
+  background-image:
+    linear-gradient(45deg, transparent 50%, #3B2715 50%),
+    linear-gradient(135deg, #3B2715 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 55%,
+    calc(100% - 13px) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+// Remove the inner WebKit search affordances (cancel button, magnifier glow)
+input[type="search"] {
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+// WordPress search block — align with global aesthetic
+.wp-block-search {
+  .wp-block-search__input {
+    @extend %yv-input-base;
+  }
+
+  &.wp-block-search__button-only,
+  &.wp-block-search__button-inside {
+    .wp-block-search__inside-wrapper {
+      border: none;
+      box-shadow: none;
+      background: transparent;
+    }
+  }
+}
+
+// Mobile: comfortable touch target + prevent iOS zoom on focus
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="search"],
+  input[type="url"],
+  input[type="number"],
+  input[type="password"],
+  input[type="date"],
+  input[type="time"],
+  textarea,
+  select {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  textarea {
+    min-height: 132px;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  input,
+  textarea,
+  select {
+    transition: none;
+  }
+}
+
+// =============================================================================
+// Global focus outline reset — neutralizes browser/framework focus rings on
+// all interactive elements site-wide (inputs, buttons, links, WP/WC blocks).
+// =============================================================================
+input,
+select,
+textarea,
+button,
+a,
+[type="button"],
+[type="submit"],
+[type="reset"],
+.wp-element-button,
+.wc-block-components-button,
+.wp-block-button__link {
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: inherit !important;
+  }
+}
+
+// Catch-all for any remaining WordPress-specific focus states
+*:focus,
+*:focus-visible {
+  outline: none !important;
+}

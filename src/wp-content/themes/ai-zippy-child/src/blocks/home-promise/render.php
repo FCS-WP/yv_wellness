@@ -7,11 +7,14 @@ $image_url = esc_url($attributes['imageUrl'] ?? '');
 $feature_title_color = esc_attr($attributes['featureTitleColor'] ?? '#3B2715');
 $feature_text_color = esc_attr($attributes['featureTextColor'] ?? '#615245');
 
-$wrapper_attributes = get_block_wrapper_attributes(['class' => 'hp']);
+$wrapper_attributes = get_block_wrapper_attributes([
+  'class' => 'hp',
+  'data-animate' => 'fade-up',
+]);
 ?>
 <section <?php echo $wrapper_attributes; ?>>
   <div class="hp__grid">
-    <div class="hp__content">
+    <div class="hp__content" data-animate="slide-left">
       <?php if ($subtitle) : ?>
         <p class="hp__subtitle"><?php echo $subtitle; ?></p>
       <?php endif; ?>
@@ -22,9 +25,9 @@ $wrapper_attributes = get_block_wrapper_attributes(['class' => 'hp']);
         <p class="hp__desc"><?php echo $description; ?></p>
       <?php endif; ?>
       <?php if (!empty($features)) : ?>
-        <ul class="hp__features">
+        <ul class="hp__features stagger-group" data-animate="fade-up">
           <?php foreach ($features as $feature) : ?>
-            <li class="hp__feature">
+            <li class="hp__feature" data-animate-child>
               <img class="hp__check" src="/wp-content/uploads/2026/05/brow-correct-tick.webp" alt="checkmark" width="24" height="24" loading="lazy" />
               <div class="hp__feature-text">
                 <strong style="color: <?php echo $feature_title_color; ?>"><?php echo esc_html($feature['title'] ?? ''); ?></strong>
@@ -35,7 +38,7 @@ $wrapper_attributes = get_block_wrapper_attributes(['class' => 'hp']);
         </ul>
       <?php endif; ?>
     </div>
-    <div class="hp__image-wrap">
+    <div class="hp__image-wrap" data-animate="slide-right">
       <?php if ($image_url) : ?>
         <img class="hp__image" src="<?php echo $image_url; ?>" alt="<?php echo $subtitle; ?>" loading="lazy" />
       <?php endif; ?>

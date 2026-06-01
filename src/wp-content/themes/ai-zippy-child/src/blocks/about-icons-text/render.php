@@ -51,7 +51,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
     <?php if (!empty($bg_image_url)) : ?>
         <span class="aitb__bg-overlay" aria-hidden="true"></span>
     <?php endif; ?>
-    <div class="aitb__inner">
+    <div class="aitb__inner" data-animate="fade-up">
         <?php if (!empty($section_heading)) : ?>
             <h2
                 class="aitb__section-heading"
@@ -62,7 +62,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
         <?php endif; ?>
 
         <?php if (!empty($items)) : ?>
-            <div class="aitb__grid">
+            <div class="aitb__grid stagger-group" data-animate="fade-up">
                 <?php foreach ($items as $item) :
                     $icon_url       = $item['iconUrl'] ?? '';
                     $heading        = $item['heading'] ?? '';
@@ -71,7 +71,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
                     $heading_color  = $item['headingColor'] ?? '#3B2715';
                     $text_color     = $item['textColor'] ?? '#615245';
                 ?>
-                    <article class="aitb__item">
+                    <article class="aitb__item hover-lift-md" data-animate-child>
                         <div
                             class="aitb__icon-wrap<?php echo empty($icon_url) ? ' aitb__icon-wrap--empty' : ''; ?>"
                             style="<?php echo esc_attr(ai_zippy_aitb_inline_color('background-color', $icon_bg_color)); ?>"

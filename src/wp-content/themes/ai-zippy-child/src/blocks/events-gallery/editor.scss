@@ -1,0 +1,81 @@
+// Events Gallery Block — Editor-only styles
+
+.eg {
+  .eg__item-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+    align-items: center;
+
+    .components-text-control__input {
+      min-width: 150px;
+    }
+
+    .components-select-control__input {
+      min-width: 100px;
+    }
+  }
+
+  .eg__item-actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .eg__add-wrap {
+    margin-top: 1rem;
+    text-align: center;
+    padding: 2rem;
+    border: 2px dashed #d4c5b3;
+    border-radius: 12px;
+    background: #fffaf3;
+  }
+
+  .eg__overlay {
+    // Always show overlay preview faintly in editor
+    opacity: 0.3;
+  }
+
+  .eg__caption {
+    transform: none;
+    opacity: 1;
+  }
+
+  .eg__image-wrap {
+    position: relative;
+  }
+
+  .eg__remove-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+    z-index: 5;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+
+    &:hover,
+    &:focus {
+      background: #e53935;
+      transform: scale(1.08);
+      outline: none;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e53935;
+    }
+  }
+}

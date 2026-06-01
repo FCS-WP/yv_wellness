@@ -1,0 +1,50 @@
+<!-- wp:group {"tagName":"header","className":"site-header","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+<header class="wp-block-group site-header">
+<!-- wp:site-logo {"width":55,"className":"site-header__logo"} /-->
+
+<!-- wp:navigation {"className":"site-header__nav","overlayMenu":"never","layout":{"type":"flex","justifyContent":"center"},"style":{"typography":{"fontFamily":"Raleway","fontSize":"0.8rem","fontWeight":"600","textTransform":"uppercase","letterSpacing":"0.08em"}},"textColor":"accent"} -->
+<!-- wp:navigation-link {"label":"Home","url":"/","className":"site-header__link"} /-->
+<!-- wp:navigation-link {"label":"About Us","url":"/about-us/","className":"site-header__link"} /-->
+<!-- wp:navigation-link {"label":"Shop","url":"/shop/","className":"site-header__link"} /-->
+<!-- wp:navigation-link {"label":"OEM/ODM","url":"/oem-odm/","className":"site-header__link"} /-->
+<!-- wp:navigation-link {"label":"Events","url":"/events/","className":"site-header__link"} /-->
+<!-- wp:navigation-link {"label":"Blog","url":"/blog/","className":"site-header__link"} /-->
+<!-- wp:navigation-link {"label":"Contact Us","url":"/contact-us/","className":"site-header__link"} /-->
+<!-- /wp:navigation -->
+
+<!-- wp:group {"className":"site-header__actions","layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
+<div class="wp-block-group site-header__actions">
+<!-- wp:search {"label":"Search","showLabel":false,"buttonPosition":"button-only","buttonUseIcon":true,"className":"site-header__search"} /-->
+<!-- wp:woocommerce/mini-cart {"className":"site-header__cart"} /-->
+<!-- wp:html -->
+<button class="site-header__hamburger" aria-label="Open menu" aria-expanded="false">
+<svg class="site-header__hamburger-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+</button>
+<!-- /wp:html -->
+</div>
+<!-- /wp:group -->
+</header>
+<!-- /wp:group -->
+
+<!-- wp:html -->
+<div class="site-header__mobile-menu" aria-hidden="true">
+<div class="site-header__mobile-menu-overlay" data-mobile-menu-dismiss></div>
+<nav class="site-header__mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+<div class="site-header__mobile-menu-header">
+<span class="site-header__mobile-menu-label">Menu</span>
+<button type="button" class="site-header__mobile-close" aria-label="Close menu">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+</button>
+</div>
+<ul class="site-header__mobile-nav">
+<li><a href="/">Home</a></li>
+<li><a href="/about-us/">About Us</a></li>
+<li><a href="/shop/">Shop</a></li>
+<li><a href="/oem-odm/">OEM/ODM</a></li>
+<li><a href="/events/">Events</a></li>
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/contact-us/">Contact Us</a></li>
+</ul>
+</nav>
+</div>
+<!-- /wp:html -->

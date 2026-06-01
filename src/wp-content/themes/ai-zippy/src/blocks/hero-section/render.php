@@ -21,7 +21,7 @@ $person_image_url = esc_url($attributes['personImageUrl'] ?? '');
 
 $is_video = $media_type === 'video' || !empty($video_url);
 
-$wrapper_attributes = get_block_wrapper_attributes();
+$wrapper_attributes = get_block_wrapper_attributes(['data-animate' => 'immediate']);
 ?>
 
 <div <?php echo $wrapper_attributes; ?>>
@@ -29,7 +29,7 @@ $wrapper_attributes = get_block_wrapper_attributes();
 
     <div class="hero-section__container">
         <!-- Left column -->
-        <div class="hero-section__content">
+        <div class="hero-section__content" data-animate="slide-left">
             <?php if ($tagline) : ?>
                 <span class="hero-section__tagline"><?php echo $tagline; ?></span>
             <?php endif; ?>
@@ -70,7 +70,7 @@ $wrapper_attributes = get_block_wrapper_attributes();
         </div>
 
         <!-- Right column - Media card -->
-        <div class="hero-section__media">
+        <div class="hero-section__media" data-animate="slide-right">
             <div class="hero-section__card">
                 <?php if ($media_url) : ?>
                     <img src="<?php echo $media_url; ?>" alt="" class="hero-section__card-img" loading="lazy" />

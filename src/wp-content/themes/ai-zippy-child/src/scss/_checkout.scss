@@ -1,0 +1,948 @@
+// =============================================================================
+// Checkout Color & Padding Overrides — YV Wellness child theme
+//
+// The actual storefront checkout is a custom React app mounted on
+// `#ai-zippy-checkout` and uses the BEM `.zk` / `.zk__*` prefix (zippy-kasse).
+// The legacy WooCommerce Checkout block (`.wc-block-checkout`) and the
+// classic shortcode (`.az-checkout`) are still styled here as fallbacks so
+// any environment that falls back to WC's default UI inherits the same brown
+// brand palette (#3B2715) and never leaks the parent theme's brand red.
+//
+// Strategy:
+//   1. Re-tone `--wp--preset--color--primary` inside every checkout scope so
+//      cascaded rules resolve to dark text instead of red.
+//   2. Force comfortable wrapper padding on `.zk` / `#ai-zippy-checkout`
+//      (100px 0 desktop / 30px 10px mobile) — matches cart rhythm.
+//   3. Re-skin all primary CTAs, links, step indicators, form fields and
+//      sidebar text to the agreed neutral + brown palette.
+// =============================================================================
+
+@use "variables" as *;
+
+// === Checkout palette tokens (local to checkout scope) ====================
+$ck-brown:       #3B2715; // primary brand brown — buttons, links, active step
+$ck-brown-soft:  rgba(59, 39, 21, 0.08);
+$ck-text:        #1a1a1a; // headings, totals, place-order text
+$ck-text-muted:  #333333; // product names, form labels, qty button glyphs
+$ck-text-soft:   #666666; // secondary labels (Subtotal, Quantity:)
+$ck-text-faint:  #999999; // optional / asterisk / inactive step labels
+$ck-border:      #e0e0e0;
+$ck-border-soft: #ccc;    // inactive step circle
+
+// -----------------------------------------------------------------------------
+// 1. Re-tint the primary CSS custom property on every checkout surface so
+//    cascaded rules using `var(--wp--preset--color--primary)` (the parent's
+//    brand red) resolve to dark text instead.
+// -----------------------------------------------------------------------------
+#ai-zippy-checkout,
+.zk,
+.wc-block-checkout,
+.wp-block-woocommerce-checkout,
+.az-checkout,
+.zc-checkout,
+body.woocommerce-checkout {
+	--wp--preset--color--primary: #{$ck-text};
+}
+
+// -----------------------------------------------------------------------------
+// 2. Wrapper padding — match cart page rhythm
+// -----------------------------------------------------------------------------
+#ai-zippy-checkout,
+.zk,
+body.woocommerce-checkout main,
+body.woocommerce-checkout .wp-block-group.has-global-padding,
+.wp-block-woocommerce-checkout,
+.wc-block-checkout,
+.az-checkout,
+.zc-checkout {
+	padding: 100px 0 !important;
+
+	@include until(md) {
+		padding: 30px 10px !important;
+	}
+}
+
+// =============================================================================
+// REACT CHECKOUT APP — primary target (.zk / .zk__*)
+// =============================================================================
+#ai-zippy-checkout,
+.zk {
+
+	// ---- Section cards ("1. Contact info", "2. Billing address" ...) -------
+	.zk__box-title {
+		color: $ck-text !important;
+		font-weight: 700;
+	}
+
+	.zk__box-num {
+		color: $ck-brown !important;
+	}
+
+	.zk__box-edit,
+	.zk__box-chevron {
+		color: $ck-brown !important;
+	}
+
+	.zk__box-summary-lines {
+		color: $ck-text-soft !important;
+
+		span:first-child {
+			color: $ck-text-muted !important;
+		}
+	}
+
+	.zk__section-title {
+		color: $ck-text !important;
+	}
+
+	// ---- Form labels --------------------------------------------------------
+	.zk__label,
+	.zk__radio-label,
+	.zk__radio-price,
+	.zk__checkbox {
+		color: $ck-text-muted !important;
+	}
+
+	// Required asterisk → soft grey instead of red
+	.zk__label--required::after {
+		color: $ck-text-faint !important;
+	}
+
+	// ---- Inputs / selects / textareas ---------------------------------------
+	// Remove focus border + box-shadow effects per design spec.
+	.zk__input,
+	.zk__select,
+	.zk__textarea {
+		border-color: $ck-border !important;
+		color: $ck-text !important;
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
+			border-color: $ck-border !important;
+		}
+
+		&::placeholder {
+			color: $ck-text-faint !important;
+		}
+	}
+
+	// Country / state select must NOT carry the parent's tinted background.
+	.zk__select {
+		background: #fff !important;
+		background-color: #fff !important;
+		// Keep the chevron caret asset, just swap the surface to white.
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") !important;
+		background-repeat: no-repeat !important;
+		background-position: right 0.85rem center !important;
+		border-color: $ck-border !important;
+	}
+
+	// Validation errors keep an accessible red, not brand red.
+	.zk__field-error,
+	.zk__input.is-error,
+	.zk__select.is-error,
+	.zk__textarea.is-error {
+		color: #b3261e !important;
+	}
+
+	.zk__input.is-error,
+	.zk__select.is-error,
+	.zk__textarea.is-error {
+		border-color: #b3261e !important;
+	}
+
+	// ---- Phone input (react-international-phone) ----------------------------
+	.react-international-phone-country-selector-button,
+	.zk__phone-input .react-international-phone-country-selector-button {
+		background: #fff !important;
+		background-color: #fff !important;
+		border-color: $ck-border !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible {
+			border-color: $ck-border !important;
+			box-shadow: none !important;
+		}
+	}
+
+	.react-international-phone-input,
+	.zk__phone-input .react-international-phone-input {
+		border-color: $ck-border !important;
+		color: $ck-text !important;
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
+			border-color: $ck-border !important;
+		}
+
+		&.is-error {
+			border-color: #b3261e !important;
+		}
+	}
+
+	// ---- Radio cards (shipping / payment) -----------------------------------
+	.zk__radio-option {
+		border-color: $ck-border !important;
+
+		&:hover {
+			border-color: $ck-text-muted !important;
+		}
+
+		&.is-selected {
+			border-color: $ck-brown !important;
+			background: $ck-brown-soft !important;
+		}
+	}
+
+	.zk__radio-desc {
+		color: $ck-text-soft !important;
+	}
+
+	// ---- Buttons ------------------------------------------------------------
+	// Primary / Continue / Place Order — solid brown, no border, opacity hover
+	.zk__btn--primary,
+	.zk__btn--continue,
+	.zk__btn--place {
+		background: $ck-brown !important;
+		background-color: $ck-brown !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $ck-brown !important;
+			background-color: $ck-brown !important;
+			color: #fff !important;
+			border: none !important;
+			box-shadow: none !important;
+			transform: none !important;
+			opacity: 0.9;
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			background: $ck-brown !important;
+		}
+	}
+
+	// Outline variant — keep neutral, no brand red leak
+	.zk__btn--outline {
+		background: #fff !important;
+		color: $ck-text !important;
+		border: 1px solid $ck-border !important;
+		box-shadow: none !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			border-color: $ck-text-muted !important;
+			color: $ck-text !important;
+			background: #fff !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// Generic small button (e.g. coupon Apply on the right of input).
+	.zk__btn--sm {
+		background: transparent !important;
+		color: $ck-brown !important;
+		border: none !important;
+		box-shadow: none !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible {
+			opacity: 0.8;
+			background: transparent !important;
+			color: $ck-brown !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// ---- "← Back to cart" link ---------------------------------------------
+	.zk__back-link {
+		color: $ck-brown !important;
+		text-decoration: none !important;
+
+		&:hover,
+		&:focus-visible {
+			color: $ck-text !important;
+		}
+	}
+
+	// =========================================================================
+	// SIDEBAR — Order Summary
+	// =========================================================================
+	.zk__sidebar {
+		background: #fff;
+		border: 1px solid $ck-border;
+		border-radius: 12px;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+	}
+
+	.zk__sidebar-title {
+		color: $ck-text !important;
+		font-weight: 700;
+	}
+
+	// Order item rows
+	.zk__order-item-name {
+		color: $ck-text-muted !important;
+	}
+
+	.zk__order-item-total {
+		color: $ck-text !important;
+	}
+
+	.zk__order-item-meta {
+		color: $ck-text-soft !important;
+	}
+
+	// Quantity controls (+/- buttons)
+	.zk__order-item-qty {
+		border-color: $ck-border !important;
+	}
+
+	.zk__qty-btn {
+		border-color: $ck-border !important;
+		color: $ck-text-muted !important;
+		background: transparent !important;
+		box-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover:not(:disabled),
+		&:focus:not(:disabled),
+		&:active:not(:disabled) {
+			border-color: $ck-text-muted !important;
+			background: transparent !important;
+			color: $ck-text-muted !important;
+			box-shadow: none !important;
+			transform: none !important;
+			opacity: 0.85;
+		}
+	}
+
+	.zk__qty-val {
+		color: $ck-text !important;
+		border-left-color: $ck-border !important;
+		border-right-color: $ck-border !important;
+	}
+
+	// Coupon / promo
+	.zk__coupon {
+		border-bottom-color: $ck-border !important;
+
+		button,
+		.zk__btn--sm {
+			color: $ck-brown !important;
+			background: transparent !important;
+			border: none !important;
+			box-shadow: none !important;
+
+			&:hover,
+			&:focus,
+			&:focus-visible {
+				opacity: 0.8;
+				background: transparent !important;
+				color: $ck-brown !important;
+			}
+		}
+	}
+
+	.zk__coupon-tag {
+		background: $ck-brown-soft !important;
+		color: $ck-brown !important;
+	}
+
+	.zk__coupon-remove {
+		color: $ck-text-faint !important;
+
+		&:hover {
+			color: $ck-brown !important;
+		}
+	}
+
+	// Totals rows
+	.zk__totals-row {
+		color: $ck-text-soft !important;
+
+		span:last-child {
+			color: $ck-text-muted !important;
+		}
+
+		&--discount,
+		&--discount span {
+			color: $ck-brown !important;
+		}
+
+		&--total {
+			color: $ck-text !important;
+			font-weight: 700;
+			border-top-color: $ck-border !important;
+
+			span,
+			span:first-child,
+			span:last-child {
+				color: $ck-text !important;
+				font-weight: 700;
+			}
+		}
+	}
+
+	// Order confirmation screen
+	.zk__confirmed-title {
+		color: $ck-text !important;
+	}
+
+	.zk__confirmed-text,
+	.zk__confirmed-status {
+		color: $ck-text-soft !important;
+	}
+
+	// Empty checkout fallback
+	.zk__empty h2 {
+		color: $ck-text !important;
+	}
+
+	.zk__empty p {
+		color: $ck-text-soft !important;
+	}
+
+	// Generic links inside the React app
+	a:not(.zk__btn):not(.zk__back-link):not([class*="zk__btn"]) {
+		color: $ck-brown;
+
+		&:hover {
+			color: $ck-text;
+		}
+	}
+}
+
+// =============================================================================
+// STEP PROGRESS INDICATOR (Shopping cart → Checkout details → Order complete)
+// Shared between the cart React UI and checkout React UI (.zc-steps).
+// =============================================================================
+.zc-steps,
+.az-checkout__steps {
+
+	// Inactive step circle — neutral white circle, soft border
+	.zc-steps__num,
+	.az-checkout__step-num {
+		background: #fff !important;
+		border: 1px solid $ck-border-soft !important;
+		color: $ck-text-faint !important;
+	}
+
+	.zc-steps__label,
+	.az-checkout__step-label {
+		color: $ck-text-faint !important;
+	}
+
+	// Connector line (default)
+	.zc-steps__line,
+	.az-checkout__step-line {
+		background: $ck-border !important;
+	}
+
+	// Active / done step — brown circle, white text
+	.zc-steps__item.is-active .zc-steps__num,
+	.zc-steps__item.is-done .zc-steps__num,
+	.az-checkout__step.is-active .az-checkout__step-num,
+	.az-checkout__step.is-done .az-checkout__step-num {
+		background: $ck-brown !important;
+		border-color: $ck-brown !important;
+		color: #fff !important;
+	}
+
+	// Connector after a done step → filled brown
+	.zc-steps__item.is-done + .zc-steps__item .zc-steps__line,
+	.zc-steps__item.is-done .zc-steps__line,
+	.zc-steps__item.is-active .zc-steps__line {
+		background: $ck-brown !important;
+	}
+
+	.zc-steps__item.is-active .zc-steps__label,
+	.az-checkout__step.is-active .az-checkout__step-label {
+		color: $ck-text !important;
+		font-weight: 600;
+	}
+
+	.zc-steps__item.is-done .zc-steps__label,
+	.az-checkout__step.is-done .az-checkout__step-label {
+		color: $ck-brown !important;
+		font-weight: 600;
+	}
+}
+
+// =============================================================================
+// FALLBACK 1 — WOOCOMMERCE CHECKOUT BLOCK (.wc-block-checkout)
+// Kept for any environment that hasn't switched to the React app yet.
+// =============================================================================
+.wc-block-checkout,
+.wp-block-woocommerce-checkout {
+
+	.wc-block-components-checkout-step__title,
+	.wc-block-components-title {
+		color: $ck-text !important;
+		font-weight: 600;
+	}
+
+	.wc-block-components-checkout-step__heading-content,
+	.wc-block-components-checkout-step__title-counter,
+	.wc-block-components-checkout-step__title::before {
+		color: $ck-brown !important;
+	}
+
+	.wc-block-components-checkout-step__description {
+		color: $ck-text-soft !important;
+	}
+
+	// Form labels
+	.wc-block-components-text-input label,
+	.wc-block-components-checkbox__label,
+	.wc-block-components-radio-control__label,
+	.wc-block-components-combobox label,
+	label {
+		color: $ck-text-muted !important;
+	}
+
+	// Required asterisk → soft grey instead of red
+	.wc-block-components-text-input label .wc-block-components-text-input__label-required,
+	label .required,
+	abbr.required,
+	label abbr[title="required"] {
+		color: $ck-text-faint !important;
+		text-decoration: none !important;
+	}
+
+	// Field borders / focus
+	.wc-block-components-text-input input,
+	.wc-block-components-textarea,
+	.wc-block-components-combobox .components-combobox-control__input,
+	.wc-block-components-country-input select,
+	.wc-block-components-state-input select {
+		border-color: $ck-border !important;
+		color: $ck-text !important;
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
+			border-color: $ck-border !important;
+		}
+	}
+
+	// Country / state selects: kill any tinted background
+	.wc-block-components-country-input,
+	.wc-block-components-state-input,
+	.wc-block-components-country-input select,
+	.wc-block-components-state-input select,
+	select.country_select,
+	select.state_select,
+	.iti,
+	.iti__flag-container,
+	.iti--allow-dropdown,
+	.iti--separate-dial-code .iti__selected-flag,
+	.iti input[type="tel"] {
+		background: #fff !important;
+		background-color: #fff !important;
+	}
+
+	.wc-block-components-checkout-return-to-cart-button,
+	.wc-block-checkout__actions_row .wc-block-components-checkout-return-to-cart-button {
+		color: $ck-brown !important;
+		text-decoration: none !important;
+
+		&:hover,
+		&:focus-visible {
+			color: $ck-text !important;
+		}
+	}
+
+	// Place order / Continue CTA
+	.wc-block-components-checkout-place-order-button,
+	.wc-block-checkout__actions_row .wc-block-components-button:not(.wc-block-components-checkout-return-to-cart-button),
+	.wp-block-woocommerce-checkout button.wc-block-components-button,
+	.wc-block-checkout__actions button,
+	button.wp-element-button,
+	button[type="submit"],
+	.az-checkout__btn {
+		background: $ck-brown !important;
+		background-color: $ck-brown !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $ck-brown !important;
+			background-color: $ck-brown !important;
+			border: none !important;
+			color: #fff !important;
+			transform: none !important;
+			box-shadow: none !important;
+			opacity: 0.9;
+		}
+
+		.wc-block-components-button__text {
+			color: #fff !important;
+		}
+	}
+
+	.wc-block-components-validation-error {
+		color: #b3261e !important;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// WC Order summary sidebar
+// -----------------------------------------------------------------------------
+.wc-block-checkout__sidebar {
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+	.wc-block-components-panel__button,
+	.wc-block-components-totals-wrapper .wc-block-components-totals-item__label,
+	h2 {
+		color: $ck-text !important;
+		font-weight: 600;
+	}
+
+	.wc-block-components-product-name,
+	.wc-block-components-order-summary-item__description a,
+	.wc-block-components-order-summary-item__description .wc-block-components-product-name {
+		color: $ck-text-muted !important;
+		font-weight: 600;
+	}
+
+	.wc-block-components-order-summary-item__total-price,
+	.wc-block-components-product-price,
+	.wc-block-components-product-price__value,
+	.wc-block-formatted-money-amount {
+		color: $ck-text !important;
+	}
+
+	.wc-block-components-order-summary-item__quantity,
+	.wc-block-components-product-metadata,
+	.wc-block-components-product-metadata__description {
+		color: $ck-text-soft !important;
+	}
+
+	.wc-block-components-order-summary-item__image .wc-block-components-order-summary-item__quantity {
+		background: $ck-brown !important;
+		color: #fff !important;
+	}
+
+	.wc-block-components-quantity-selector {
+		border: 1px solid $ck-border !important;
+
+		&:hover,
+		&:focus-within {
+			border-color: $ck-text-muted !important;
+		}
+
+		.wc-block-components-quantity-selector__button {
+			color: $ck-text-muted !important;
+
+			&:hover:not(:disabled) {
+				background: transparent !important;
+				color: $ck-text !important;
+			}
+		}
+
+		.wc-block-components-quantity-selector__input {
+			color: $ck-text !important;
+			border-color: $ck-border !important;
+		}
+	}
+
+	.wc-block-components-totals-item__label {
+		color: $ck-text-soft !important;
+	}
+
+	.wc-block-components-totals-item__value,
+	.wc-block-components-totals-item__value .wc-block-formatted-money-amount {
+		color: $ck-text-muted !important;
+	}
+
+	.wc-block-components-totals-footer-item {
+
+		.wc-block-components-totals-item__label,
+		.wc-block-components-totals-item__value,
+		.wc-block-components-totals-item__value .wc-block-formatted-money-amount {
+			color: $ck-text !important;
+			font-weight: 700;
+		}
+	}
+
+	.wc-block-components-totals-shipping__via,
+	.wc-block-components-totals-item__description {
+		color: $ck-text-soft !important;
+	}
+
+	.wc-block-components-totals-coupon {
+
+		.wc-block-components-totals-coupon__button,
+		.wc-block-components-totals-coupon__form .wc-block-components-button.is-link {
+			color: $ck-brown !important;
+			background: transparent !important;
+			border: none !important;
+
+			&:hover {
+				opacity: 0.8;
+				color: $ck-brown !important;
+			}
+		}
+
+		.wc-block-components-text-input input {
+			border-color: $ck-border !important;
+
+			&:focus,
+			&:focus-visible {
+				border-color: $ck-border !important;
+				box-shadow: none !important;
+				outline: none !important;
+			}
+		}
+
+		.wc-block-components-totals-coupon__content .wc-block-components-button {
+			background: $ck-brown !important;
+			background-color: $ck-brown !important;
+			color: #fff !important;
+			border: none !important;
+			box-shadow: none !important;
+			transition: opacity 0.2s ease !important;
+
+			&:hover,
+			&:focus,
+			&:focus-visible,
+			&:active {
+				background: $ck-brown !important;
+				background-color: $ck-brown !important;
+				border: none !important;
+				color: #fff !important;
+				transform: none !important;
+				box-shadow: none !important;
+				opacity: 0.9;
+			}
+		}
+	}
+
+	a:not(.wc-block-components-button):not(.wp-block-button__link) {
+		color: $ck-brown;
+
+		&:hover {
+			color: $ck-text;
+		}
+	}
+}
+
+// =============================================================================
+// FALLBACK 2 — LEGACY CLASSIC CHECKOUT (.az-checkout — shortcode)
+// =============================================================================
+.az-checkout {
+
+	.az-checkout__card-title {
+		color: $ck-text !important;
+		font-weight: 600;
+	}
+
+	.az-checkout__card-num {
+		color: $ck-brown !important;
+	}
+
+	label {
+		color: $ck-text-muted !important;
+
+		.required {
+			color: $ck-text-faint !important;
+		}
+	}
+
+	input,
+	select,
+	textarea {
+		border-color: $ck-border !important;
+		color: $ck-text !important;
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
+			border-color: $ck-border !important;
+		}
+	}
+
+	.az-checkout__sidebar {
+		background: #fff;
+		border-radius: 12px;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+		padding: 1.25rem;
+	}
+
+	.az-checkout__item-name {
+		color: $ck-text-muted !important;
+	}
+
+	.az-checkout__item-total,
+	.az-checkout__totals-row--total {
+		color: $ck-text !important;
+	}
+
+	.az-checkout__totals-row {
+		color: $ck-text-soft !important;
+
+		&--total {
+			color: $ck-text !important;
+			font-weight: 700;
+		}
+	}
+
+	.az-checkout__item-meta {
+		color: $ck-text-soft !important;
+	}
+
+	.az-checkout__item-qty {
+		border-color: $ck-border !important;
+	}
+
+	.az-checkout__qty-btn {
+		color: $ck-text-muted !important;
+		background: transparent !important;
+
+		&:hover {
+			background: transparent !important;
+			color: $ck-text !important;
+		}
+	}
+
+	.az-checkout__coupon-input {
+		border-color: $ck-border !important;
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
+			border-color: $ck-border !important;
+		}
+	}
+
+	.az-checkout__coupon-btn {
+		background: $ck-brown !important;
+		background-color: $ck-brown !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $ck-brown !important;
+			background-color: $ck-brown !important;
+			border: none !important;
+			color: #fff !important;
+			transform: none !important;
+			box-shadow: none !important;
+			opacity: 0.9;
+		}
+	}
+
+	#place_order,
+	button#place_order,
+	button[name="woocommerce_checkout_place_order"] {
+		background: $ck-brown !important;
+		background-color: $ck-brown !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		min-height: 48px;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $ck-brown !important;
+			background-color: $ck-brown !important;
+			border: none !important;
+			color: #fff !important;
+			transform: none !important;
+			box-shadow: none !important;
+			opacity: 0.9;
+		}
+	}
+
+	select.country_select,
+	select.state_select,
+	.country_select,
+	.state_select,
+	.iti,
+	.iti__flag-container,
+	.iti--allow-dropdown,
+	.iti--separate-dial-code .iti__selected-flag,
+	.iti input[type="tel"] {
+		background: #fff !important;
+		background-color: #fff !important;
+	}
+
+	.woocommerce-checkout-payment a,
+	.woocommerce-form-coupon-toggle a,
+	a:not(.button):not(#place_order) {
+		color: $ck-brown;
+
+		&:hover {
+			color: $ck-text;
+		}
+	}
+}
+
+// =============================================================================
+// MOBILE — touch-friendly buttons, comfortable spacing
+// =============================================================================
+@include until(md) {
+
+	#ai-zippy-checkout .zk__btn--place,
+	.zk .zk__btn--place,
+	#ai-zippy-checkout .zk__btn--continue,
+	.zk .zk__btn--continue,
+	.wc-block-checkout .wc-block-components-checkout-place-order-button,
+	.wc-block-checkout__actions_row .wc-block-components-button,
+	.az-checkout #place_order {
+		width: 100% !important;
+		min-height: 48px !important;
+		padding: 0.95rem 1rem !important;
+		font-size: 0.95rem !important;
+	}
+
+	.zk__sidebar,
+	.wc-block-checkout__sidebar,
+	.az-checkout__sidebar {
+		margin-top: 1.5rem;
+	}
+
+	// Stack form rows on small screens
+	.wc-block-components-address-form,
+	.az-checkout .woocommerce-billing-fields__field-wrapper,
+	.az-checkout .woocommerce-shipping-fields__field-wrapper {
+		grid-template-columns: 1fr !important;
+	}
+}

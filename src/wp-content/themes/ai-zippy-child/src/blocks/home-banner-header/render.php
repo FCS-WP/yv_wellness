@@ -7,8 +7,17 @@
  * @var WP_Block $block      Block instance.
  */
 
-$heading         = wp_kses_post($attributes['heading'] ?? '');
-$body            = wp_kses_post($attributes['body'] ?? '');
+// Normalize broken <br> variants (handles raw HTML and entity-encoded forms
+// such as </br>, < /br>, <br/>, &lt;/br&gt;, etc.) before sanitization.
+$heading = (string) ($attributes['heading'] ?? '');
+$heading = html_entity_decode($heading, ENT_QUOTES, 'UTF-8');
+$heading = preg_replace('/<\s*\/?\s*br\s*\/?\s*>/i', '<br>', $heading);
+$heading = wp_kses_post($heading);
+
+$body = (string) ($attributes['body'] ?? '');
+$body = html_entity_decode($body, ENT_QUOTES, 'UTF-8');
+$body = preg_replace('/<\s*\/?\s*br\s*\/?\s*>/i', '<br>', $body);
+$body = wp_kses_post($body);
 $button_text     = esc_html($attributes['buttonText'] ?? 'SHOP NOW');
 $button_url      = esc_url($attributes['buttonUrl'] ?? '#');
 $bg_image_url    = esc_url($attributes['bgImageUrl'] ?? '');
