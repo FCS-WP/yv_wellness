@@ -24,8 +24,8 @@ src/wp-content/themes/twentytwentyfive
 src/wp-content/plugins/akismet
 src/wp-content/plugins/hello.php
 
-# Zippy owner plugins (not needed)
-src/wp-content/plugins/zippy-*
+# # Zippy owner plugins (not needed)
+# src/wp-content/plugins/zippy-*
 
 # WordPress uploads and cache
 src/wp-content/uploads
