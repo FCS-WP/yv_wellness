@@ -10,6 +10,7 @@
   "keywords": ["gallery", "events", "images", "masonry", "overlay"],
   "supports": {
     "html": false,
+    "align": false,
     "spacing": {
       "margin": true,
       "padding": true

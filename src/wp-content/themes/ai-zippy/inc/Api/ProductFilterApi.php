@@ -376,9 +376,12 @@ class ProductFilterApi
 
     private static function getCategories(): array
     {
+        // hide_empty=false ensures category section is always populated even
+        // when no products are assigned to a term yet — prevents the React
+        // FilterPanel from rendering an empty Category card.
         $categories = get_terms([
             'taxonomy'   => 'product_cat',
-            'hide_empty' => true,
+            'hide_empty' => false,
             'orderby'    => 'name',
         ]);
 
@@ -386,13 +389,20 @@ class ProductFilterApi
             return [];
         }
 
-        return array_map(fn($cat) => [
+        // Drop the auto-generated "uncategorized" placeholder so it does not
+        // appear in the sidebar when no products are filed under it.
+        $categories = array_filter(
+            $categories,
+            fn($cat) => $cat->slug !== 'uncategorized' || (int) $cat->count > 0
+        );
+
+        return array_values(array_map(fn($cat) => [
             'id'     => $cat->term_id,
             'name'   => wp_specialchars_decode($cat->name, ENT_QUOTES),
             'slug'   => $cat->slug,
             'count'  => $cat->count,
             'parent' => $cat->parent,
-        ], $categories);
+        ], $categories));
     }
 
     private static function getAttributes(): array

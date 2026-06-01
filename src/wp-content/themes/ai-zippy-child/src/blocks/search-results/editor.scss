@@ -1,0 +1,36 @@
+.search-results-editor-placeholder {
+    background-color: #FFFAF3;
+    border: 1px dashed rgba(59, 39, 21, 0.25);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    color: #615245;
+
+    &__inner {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    &__kicker {
+        display: inline-block;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7c4612;
+        margin-bottom: 0.75rem;
+    }
+
+    &__title {
+        font-family: 'Marcellus', serif;
+        font-size: 1.5rem;
+        color: #3B2715;
+        margin: 0 0 0.5rem;
+    }
+
+    &__desc {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+}

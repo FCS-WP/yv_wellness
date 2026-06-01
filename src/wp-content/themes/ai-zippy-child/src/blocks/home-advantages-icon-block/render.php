@@ -24,13 +24,13 @@ $wrapper_attributes = get_block_wrapper_attributes([
           </div>
         <?php endif; ?>
         <?php if (!empty($item['subtitle'])) : ?>
-          <p class="haib__subtitle"><?php echo esc_html($item['subtitle']); ?></p>
+          <p class="haib__subtitle"><?php echo wp_kses_post($item['subtitle']); ?></p>
         <?php endif; ?>
         <?php if (!empty($item['heading'])) : ?>
-          <h3 class="haib__heading"><?php echo esc_html($item['heading']); ?></h3>
+          <h3 class="haib__heading"><?php echo wp_kses_post($item['heading']); ?></h3>
         <?php endif; ?>
         <?php if (!empty($item['text'])) : ?>
-          <p class="haib__text"><?php echo esc_html($item['text']); ?></p>
+          <p class="haib__text"><?php echo wp_kses_post($item['text']); ?></p>
         <?php endif; ?>
       </div>
     <?php endforeach; ?>

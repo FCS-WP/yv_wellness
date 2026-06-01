@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-zippy-child/search-results",
+  "version": "1.0.0",
+  "title": "Search Results",
+  "category": "theme",
+  "icon": "search",
+  "description": "Displays search results categorized by content type (products, posts, pages).",
+  "keywords": ["search", "results", "products", "posts"],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "textdomain": "ai-zippy-child",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

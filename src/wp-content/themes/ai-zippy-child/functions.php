@@ -159,59 +159,98 @@ add_action('rest_api_init', function () {
 
 if (!function_exists('ai_zippy_handle_contact_form')) {
     function ai_zippy_handle_contact_form(WP_REST_Request $request) {
-        $params = $request->get_json_params();
+        try {
+            $params = $request->get_json_params();
 
-        $name      = sanitize_text_field($params['name'] ?? '');
-        $email     = sanitize_email($params['email'] ?? '');
-        $phone     = sanitize_text_field($params['phone'] ?? '');
-        $subject   = sanitize_text_field($params['subject'] ?? 'New Contact Form Submission');
-        $message   = sanitize_textarea_field($params['message'] ?? '');
-        $recipient = sanitize_email($params['recipient'] ?? 'yvwellnesssgp@gmail.com');
+            $name      = sanitize_text_field($params['name'] ?? '');
+            $email     = sanitize_email($params['email'] ?? '');
+            $phone     = sanitize_text_field($params['phone'] ?? '');
+            $subject   = sanitize_text_field($params['subject'] ?? 'New Contact Form Submission');
+            $message   = sanitize_textarea_field($params['message'] ?? '');
+            $recipient = sanitize_email($params['recipient'] ?? 'yvwellnesssgp@gmail.com');
 
-        // Validate required fields
-        if (empty($name) || empty($email) || empty($message)) {
-            return new WP_REST_Response([
-                'status'  => 'error',
-                'message' => 'Please fill in all required fields (name, email, message).',
-            ], 400);
-        }
+            // Validate required fields
+            if (empty($name) || empty($email) || empty($message)) {
+                return new WP_REST_Response([
+                    'status'  => 'error',
+                    'message' => 'Please fill in all required fields (name, email, message).',
+                ], 400);
+            }
 
-        if (!is_email($email)) {
-            return new WP_REST_Response([
-                'status'  => 'error',
-                'message' => 'Please provide a valid email address.',
-            ], 400);
-        }
+            if (!is_email($email)) {
+                return new WP_REST_Response([
+                    'status'  => 'error',
+                    'message' => 'Please provide a valid email address.',
+                ], 400);
+            }
 
-        // Build email
-        $email_subject = '[YV Wellness Contact] ' . ($subject ?: 'New Inquiry');
-        $email_body    = "New contact form submission:\n\n";
-        $email_body   .= "Name: {$name}\n";
-        $email_body   .= "Email: {$email}\n";
-        if ($phone) {
-            $email_body .= "Phone: {$phone}\n";
-        }
-        $email_body .= "Subject: {$subject}\n\n";
-        $email_body .= "Message:\n{$message}\n";
+            // Store submission in database (never lose a message)
+            $submission = [
+                'name'      => $name,
+                'email'     => $email,
+                'phone'     => $phone,
+                'subject'   => $subject,
+                'message'   => $message,
+                'recipient' => $recipient,
+                'date'      => current_time('mysql'),
+                'mail_sent' => false,
+            ];
 
-        $headers = [
-            'Content-Type: text/plain; charset=UTF-8',
-            "Reply-To: {$name} <{$email}>",
-        ];
+            $submissions = get_option('ai_zippy_contact_submissions', []);
+            $submissions[] = $submission;
+            // Keep last 100 submissions
+            if (count($submissions) > 100) {
+                $submissions = array_slice($submissions, -100);
+            }
+            update_option('ai_zippy_contact_submissions', $submissions);
 
-        $sent = wp_mail($recipient, $email_subject, $email_body, $headers);
+            // Attempt to send email
+            $email_subject = '[YV Wellness Contact] ' . ($subject ?: 'New Inquiry');
+            $email_body    = "New contact form submission:\n\n";
+            $email_body   .= "Name: {$name}\n";
+            $email_body   .= "Email: {$email}\n";
+            if ($phone) {
+                $email_body .= "Phone: {$phone}\n";
+            }
+            $email_body .= "Subject: {$subject}\n\n";
+            $email_body .= "Message:\n{$message}\n";
 
-        if ($sent) {
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                "Reply-To: {$name} <{$email}>",
+            ];
+
+            // Capture mail errors
+            $mail_error = '';
+            add_action('wp_mail_failed', function($wp_error) use (&$mail_error) {
+                $mail_error = $wp_error->get_error_message();
+            });
+
+            $sent = wp_mail($recipient, $email_subject, $email_body, $headers);
+
+            if (!$sent) {
+                error_log('Contact form: wp_mail() failed. Error: ' . $mail_error . ' | From: ' . $email);
+            }
+
+            // Always return success since we stored the submission
             return new WP_REST_Response([
                 'status'  => 'success',
-                'message' => 'Thank you! Your message has been sent successfully.',
+                'message' => 'Thank you! Your message has been received successfully.',
             ], 200);
-        }
 
-        return new WP_REST_Response([
-            'status'  => 'error',
-            'message' => 'Failed to send email. Please try again later or contact us directly.',
-        ], 500);
+        } catch (\Exception $e) {
+            error_log('Contact form exception: ' . $e->getMessage());
+            return new WP_REST_Response([
+                'status'  => 'error',
+                'message' => 'An error occurred while processing your request. Please try again.',
+            ], 500);
+        } catch (\Error $e) {
+            error_log('Contact form fatal error: ' . $e->getMessage());
+            return new WP_REST_Response([
+                'status'  => 'error',
+                'message' => 'An error occurred while processing your request. Please try again.',
+            ], 500);
+        }
     }
 }
 

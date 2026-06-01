@@ -1,0 +1,917 @@
+// =============================================================================
+// Cart UX Overhaul — YV Wellness child theme
+//
+// Goal: clean, white, minimal cart surface with soft neutrals, subtle shadows,
+// and a brown (#3B2715) brand accent reserved for primary CTAs and links.
+// Removes the previous brown/dark page background and the red product
+// descriptions inherited from the parent theme.
+// =============================================================================
+
+@use "variables" as *;
+
+// === Cart palette tokens (local to cart scope) ============================
+$cart-brown:        #3B2715; // primary brand brown — buttons, links, active step
+$cart-brown-dark:   #24180D; // hover/pressed state for brown CTAs (precomputed)
+$cart-brown-soft:   rgba(59, 39, 21, 0.08);
+$cart-heading:      #1a1a1a; // section headings, totals
+$cart-text:         #333333; // product titles, prices
+$cart-muted:        #666666; // table labels, helper copy
+$cart-faint:        #999999; // clear cart, remove icon idle
+$cart-border:       #e0e0e0; // input/qty button borders, connector line
+$cart-card-border:  #f0f0f0; // soft card outline
+$cart-bg:           #ffffff; // page + container background
+$cart-shadow:       0 2px 12px rgba(0, 0, 0, 0.06);
+$cart-radius:       12px;
+
+// -----------------------------------------------------------------------------
+// Re-tint the parent theme's primary CSS custom property on every cart surface
+// so cascaded rules pick up dark text instead of brand red. This kills the red
+// product description leak in one shot.
+// -----------------------------------------------------------------------------
+.zc,
+.cart-page,
+.wp-block-woocommerce-cart,
+.wc-block-cart,
+.wc-block-mini-cart__drawer,
+.wc-block-mini-cart {
+	--wp--preset--color--primary: #{$cart-heading};
+}
+
+// =============================================================================
+// 1. HIDE PRODUCT DESCRIPTION TEXT (the red copy under product titles)
+// =============================================================================
+.zc-item__desc,
+.zc-item__description,
+.zc-row__desc,
+.zc-row__description,
+.zc-row__short-description,
+.wc-block-cart-item__description,
+.wc-block-components-product-details,
+.wc-block-components-product-metadata__description,
+.wc-block-components-product-name + p,
+.wc-block-components-product-name + .wc-block-components-product-metadata p {
+	display: none !important;
+}
+
+// =============================================================================
+// 2. PAGE WRAPPER — white background + comfortable padding
+// =============================================================================
+.zc,
+.cart-page,
+.wp-block-woocommerce-cart,
+.wc-block-cart {
+	background: $cart-bg !important;
+	color: $cart-text;
+	padding: 30px 10px;
+
+	@include from(md) {
+		padding: 100px 0;
+	}
+
+	// Any child wrapper / column / inner container should also stay white so
+	// the parent theme's brown section background can't bleed through.
+	.wp-block-group,
+	.wp-block-columns,
+	.wp-block-column,
+	.zc-inner,
+	.zc-grid,
+	.zc-items,
+	.zc-sidebar,
+	.wc-block-cart__main,
+	.wc-block-cart__sidebar,
+	.wc-block-cart-items {
+		background: $cart-bg !important;
+	}
+}
+
+// =============================================================================
+// 3. CUSTOM CART PAGE (.zc-* — zippy cart React UI)
+// =============================================================================
+.zc {
+
+	// ---- Step indicator (Shopping cart → Checkout details → Order complete)
+	//      Inactive = white circle with grey border, Active/Done = brown.
+	//      Mirrors the checkout step indicator so cart/checkout stay consistent.
+	.zc-steps {
+		background: $cart-bg !important;
+
+		.zc-steps__num {
+			background: #fff !important;
+			border: 1px solid #ccc !important;
+			color: $cart-faint !important;
+		}
+
+		.zc-steps__line {
+			background: $cart-border !important;
+		}
+
+		.zc-steps__label {
+			color: $cart-faint !important;
+		}
+
+		.zc-steps__item.is-active .zc-steps__num,
+		.zc-steps__item.is-done .zc-steps__num {
+			background: $cart-brown !important;
+			border-color: $cart-brown !important;
+			color: #fff !important;
+		}
+
+		.zc-steps__item.is-active .zc-steps__line,
+		.zc-steps__item.is-done .zc-steps__line,
+		.zc-steps__item.is-done + .zc-steps__item .zc-steps__line {
+			background: $cart-brown !important;
+		}
+
+		.zc-steps__item.is-active .zc-steps__label {
+			color: $cart-heading !important;
+			font-weight: 600;
+		}
+
+		.zc-steps__item.is-done .zc-steps__label {
+			color: $cart-brown !important;
+			font-weight: 600;
+		}
+	}
+
+	// ---- Items card (left column) ----
+	.zc-items {
+		background: $cart-bg !important;
+		border: 1px solid $cart-card-border;
+		border-radius: $cart-radius;
+		box-shadow: $cart-shadow;
+		padding: 1.5rem;
+
+		@include from(md) {
+			padding: 2rem;
+		}
+	}
+
+	// Heading: "Cart (1 product)"
+	.zc-items__title {
+		color: $cart-heading !important;
+		font-weight: 600;
+	}
+
+	.zc-items__count {
+		color: $cart-muted !important;
+		font-weight: 400;
+	}
+
+	// Column labels (Product / Count / Price)
+	.zc-items__labels,
+	.zc-items__labels span,
+	.zc-items__head,
+	.zc-items__head span {
+		color: $cart-muted !important;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		font-size: 0.8rem;
+	}
+
+	// Clear cart link
+	.zc-items__clear {
+		color: $cart-faint !important;
+		background: transparent !important;
+
+		&:hover {
+			background: transparent !important;
+			color: $cart-text !important;
+		}
+	}
+
+	// ---- Cart row product info ----
+	.zc-row__name {
+		color: $cart-text !important;
+		font-weight: 600;
+	}
+
+	.zc-row__variant {
+		color: $cart-muted !important;
+	}
+
+	.zc-row__price {
+		color: $cart-text !important;
+		font-weight: 600;
+	}
+
+	// ---- Quantity selector (minimal, no hover animation) ----
+	.zc-row__qty {
+		border: 1px solid $cart-border !important;
+		border-radius: 8px !important;
+		background: #fff !important;
+		transition: none !important;
+
+		&:hover,
+		&:focus-within {
+			border-color: $cart-border !important;
+			box-shadow: none !important;
+		}
+	}
+
+	.zc-row__qty-btn {
+		color: $cart-text !important;
+		background: transparent !important;
+		border: none !important;
+		box-shadow: none !important;
+		transform: none !important;
+		transition: none !important;
+
+		&:hover:not(:disabled),
+		&:focus:not(:disabled),
+		&:active:not(:disabled) {
+			background: transparent !important;
+			color: $cart-text !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	.zc-row__qty-val {
+		color: $cart-text !important;
+	}
+
+	// ---- Remove (×) button ----
+	.zc-row__remove {
+		color: $cart-faint !important;
+		background: transparent !important;
+
+		&:hover:not(:disabled) {
+			color: $cart-text !important;
+			background: transparent !important;
+		}
+	}
+
+	// ---- Sidebar / totals card ----
+	.zc-sidebar {
+		background: $cart-bg !important;
+		border: 1px solid $cart-card-border;
+		border-radius: $cart-radius;
+		box-shadow: $cart-shadow;
+		padding: 1.5rem;
+
+		@include from(md) {
+			padding: 2rem;
+		}
+	}
+
+	.zc-sidebar__promo-title {
+		color: $cart-heading !important;
+		font-weight: 600;
+	}
+
+	.zc-sidebar__row span:first-child {
+		color: $cart-muted !important;
+	}
+
+	.zc-sidebar__row span:last-child {
+		color: $cart-text !important;
+	}
+
+	// "Save $X" / discount stays a friendly brown accent (never red/pink/green)
+	.zc-sidebar__row--discount,
+	.zc-sidebar__row--discount span:first-child,
+	.zc-sidebar__row--discount span:last-child {
+		color: $cart-brown !important;
+		font-weight: 600;
+		background: transparent !important;
+	}
+
+	// Per-item savings badge (e.g. "Save $51.60", "Save $12.50")
+	.zc-item__savings,
+	.zc-item__save,
+	.zc-row__savings,
+	.zc-row__save,
+	.zc-row__discount,
+	.zc-row__discount-amount {
+		color: $cart-brown !important;
+		background: $cart-brown-soft !important;
+		border: none !important;
+		font-weight: 600;
+		border-radius: 4px;
+		padding: 2px 8px;
+		display: inline-block;
+	}
+
+	.zc-sidebar__row--total {
+		border-top: 1px solid $cart-border !important;
+
+		span:first-child,
+		span:last-child {
+			color: $cart-heading !important;
+			font-weight: 700;
+		}
+	}
+
+	// ---- Promo input + apply button ----
+	.zc-sidebar__promo-form {
+		input {
+			border: 1px solid $cart-border !important;
+			border-radius: 8px !important;
+			color: $cart-text !important;
+			background: #fff !important;
+
+			&::placeholder {
+				color: $cart-faint !important;
+			}
+
+			&:focus {
+				border-color: $cart-brown !important;
+				outline: none !important;
+			}
+		}
+
+		button {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			border-radius: 8px !important;
+			box-shadow: none !important;
+			transition: opacity 0.2s ease !important;
+
+			&:hover:not(:disabled),
+			&:focus:not(:disabled),
+			&:active:not(:disabled) {
+				background: $cart-brown !important;
+				color: #fff !important;
+				border: none !important;
+				opacity: 0.9 !important;
+				transform: none !important;
+				box-shadow: none !important;
+			}
+		}
+	}
+
+	.zc-sidebar__promo-error {
+		color: #b3261e !important; // accessible error red, not brand red
+	}
+
+	.zc-sidebar__coupon-tag button {
+		color: $cart-faint !important;
+
+		&:hover {
+			color: $cart-text !important;
+		}
+	}
+
+	// ---- "Continue to checkout" CTA — solid brown, no border, opacity hover ----
+	.zc-sidebar__checkout {
+		background: $cart-brown !important;
+		color: #fff !important;
+		border: none !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		font-weight: 600;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $cart-brown !important;
+			border: none !important;
+			color: #fff !important;
+			opacity: 0.9 !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// ---- Empty state ----
+	.zc-empty {
+		background: $cart-bg !important;
+		border: 1px solid $cart-card-border;
+		border-radius: $cart-radius;
+		box-shadow: $cart-shadow;
+	}
+
+	.zc-empty__title {
+		color: $cart-heading !important;
+	}
+
+	.zc-empty__text {
+		color: $cart-muted !important;
+	}
+
+	.zc-empty__btn--primary,
+	.zc-empty__btn--secondary {
+		background: $cart-brown !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			opacity: 0.9 !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// Generic links
+	a:not([class*="btn"]):not([class*="checkout"]) {
+		color: $cart-brown;
+
+		&:hover {
+			color: $cart-heading;
+		}
+	}
+}
+
+// =============================================================================
+// 4. WC CART BLOCK PAGE (.wc-block-cart-* — fallback if used)
+// =============================================================================
+.wp-block-woocommerce-cart,
+.wc-block-cart {
+
+	// Items + totals containers
+	.wc-block-cart__main,
+	.wc-block-cart-items,
+	.wc-block-cart__sidebar,
+	.wp-block-woocommerce-cart-order-summary-block {
+		background: $cart-bg !important;
+		border: 1px solid $cart-card-border;
+		border-radius: $cart-radius;
+		box-shadow: $cart-shadow;
+		padding: 1.5rem;
+
+		@include from(md) {
+			padding: 2rem;
+		}
+	}
+
+	// Headings
+	.wc-block-cart__heading,
+	.wc-block-cart-items__header,
+	.wp-block-woocommerce-cart-order-summary-heading-block,
+	.wc-block-cart__totals-title {
+		color: $cart-heading !important;
+		font-weight: 600;
+	}
+
+	// Product title
+	.wc-block-components-product-name {
+		color: $cart-text !important;
+		font-weight: 600;
+
+		&:hover {
+			color: $cart-brown !important;
+		}
+	}
+
+	// Prices
+	.wc-block-components-product-price,
+	.wc-block-components-product-price__value,
+	.wc-block-components-totals-item__value,
+	.wc-block-formatted-money-amount {
+		color: $cart-text !important;
+	}
+
+	.wc-block-components-product-price__value.is-discounted {
+		color: $cart-heading !important;
+		font-weight: 700;
+	}
+
+	// Strikethrough regular price
+	.wc-block-components-product-price__regular,
+	del,
+	del .wc-block-formatted-money-amount {
+		color: $cart-faint !important;
+	}
+
+	// Savings badge — neutral brown, never red/pink
+	.wc-block-components-sale-badge,
+	.wc-block-components-product-badge,
+	.wc-block-cart-item__sale-badge,
+	.wc-block-cart-item__savings,
+	.wc-block-components-totals-item--savings,
+	.wc-block-components-totals-item--savings .wc-block-components-totals-item__label,
+	.wc-block-components-totals-item--savings .wc-block-components-totals-item__value,
+	.wc-block-components-totals-discount,
+	.wc-block-components-totals-discount .wc-block-components-totals-item__label,
+	.wc-block-components-totals-discount .wc-block-components-totals-item__value {
+		background: $cart-brown-soft !important;
+		color: $cart-brown !important;
+		border: none !important;
+		border-color: transparent !important;
+		box-shadow: none !important;
+		font-weight: 600;
+	}
+
+	// Totals labels
+	.wc-block-components-totals-item__label {
+		color: $cart-muted !important;
+	}
+
+	// Totals final row
+	.wc-block-components-totals-footer-item .wc-block-components-totals-item__label,
+	.wc-block-components-totals-footer-item .wc-block-components-totals-item__value,
+	.wc-block-components-totals-footer-item .wc-block-formatted-money-amount {
+		color: $cart-heading !important;
+		font-weight: 700;
+	}
+
+	// Helper notes
+	.wc-block-components-totals-item__description,
+	.wc-block-components-totals-shipping__description,
+	.wc-block-cart__totals-description {
+		color: $cart-muted !important;
+	}
+
+	// Quantity selector (minimal, no hover animation)
+	.wc-block-components-quantity-selector {
+		border: 1px solid $cart-border !important;
+		border-radius: 8px !important;
+		background: #fff !important;
+		box-shadow: none !important;
+		transition: none !important;
+
+		&:hover,
+		&:focus-within {
+			border-color: $cart-border !important;
+			box-shadow: none !important;
+		}
+
+		.wc-block-components-quantity-selector__button {
+			color: $cart-text !important;
+			background: transparent !important;
+			border: none !important;
+			box-shadow: none !important;
+			transform: none !important;
+			transition: none !important;
+
+			&:hover,
+			&:focus,
+			&:active {
+				color: $cart-text !important;
+				background: transparent !important;
+				transform: none !important;
+				box-shadow: none !important;
+			}
+		}
+
+		.wc-block-components-quantity-selector__input {
+			color: $cart-text !important;
+			border-color: $cart-border !important;
+		}
+	}
+
+	// Remove (×) button
+	.wc-block-cart-item__remove-link {
+		color: $cart-faint !important;
+
+		&:hover {
+			color: $cart-text !important;
+		}
+	}
+
+	// Dividers
+	.wc-block-cart-items > *,
+	.wc-block-cart-item,
+	.wc-block-components-totals-wrapper {
+		border-color: $cart-border !important;
+	}
+
+	// Generic links
+	a:not(.wc-block-components-button):not(.wp-block-button__link) {
+		color: $cart-brown;
+
+		&:hover {
+			color: $cart-heading;
+		}
+	}
+
+	// Primary submit / "Proceed to checkout" — solid brown, no border, opacity hover
+	.wc-block-cart__submit-button,
+	.wc-block-components-checkout-place-order-button,
+	.wp-block-woocommerce-proceed-to-checkout-block .wc-block-components-button,
+	.wp-block-button__link.wc-block-cart__submit-button {
+		background: $cart-brown !important;
+		color: #fff !important;
+		border: none !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		font-weight: 600;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $cart-brown !important;
+			border: none !important;
+			color: #fff !important;
+			opacity: 0.9 !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// Outline / secondary buttons — collapse to filled brown, no border
+	.wc-block-components-button.outlined,
+	.wp-block-button.is-style-outline .wp-block-button__link {
+		background: $cart-brown !important;
+		color: #fff !important;
+		border: none !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			opacity: 0.9 !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// Promo / coupon input
+	.wc-block-components-totals-coupon__form input,
+	.wc-block-components-text-input input {
+		border: 1px solid $cart-border !important;
+		border-radius: 8px !important;
+		color: $cart-text !important;
+		background: #fff !important;
+
+		&:focus {
+			border-color: $cart-brown !important;
+			outline-color: $cart-brown !important;
+		}
+	}
+
+	.wc-block-components-totals-coupon__button {
+		background: $cart-brown !important;
+		color: #fff !important;
+		border: none !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			opacity: 0.9 !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	// Notices keep an accessible (non-brand) red
+	.wc-block-components-notice-banner.is-error {
+		color: #b3261e !important;
+	}
+}
+
+// =============================================================================
+// 5. MINI CART DRAWER (.wc-block-mini-cart__*) — keep neutral palette aligned
+// =============================================================================
+.wc-block-mini-cart__drawer,
+.wc-block-mini-cart {
+	background: $cart-bg !important;
+
+	.wc-block-mini-cart__title {
+		color: $cart-heading !important;
+		font-weight: 600;
+	}
+
+	.wc-block-mini-cart-items .wc-block-components-product-name {
+		color: $cart-text !important;
+
+		&:hover {
+			color: $cart-brown !important;
+		}
+	}
+
+	.wc-block-mini-cart-items .wc-block-components-product-price,
+	.wc-block-mini-cart-items .wc-block-components-product-price__value {
+		color: $cart-text !important;
+	}
+
+	.wc-block-components-order-summary-item__total-price,
+	.wc-block-components-order-summary-item__total-price .wc-block-formatted-money-amount {
+		color: $cart-heading !important;
+	}
+
+	.wc-block-components-quantity-selector {
+		border: 1px solid $cart-border !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		transition: none !important;
+
+		&:hover,
+		&:focus-within {
+			border-color: $cart-border !important;
+			box-shadow: none !important;
+		}
+
+		.wc-block-components-quantity-selector__button {
+			color: $cart-text !important;
+			background: transparent !important;
+			border: none !important;
+			box-shadow: none !important;
+			transform: none !important;
+			transition: none !important;
+
+			&:hover,
+			&:focus,
+			&:active {
+				background: transparent !important;
+				color: $cart-text !important;
+				transform: none !important;
+				box-shadow: none !important;
+			}
+		}
+
+		.wc-block-components-quantity-selector__input {
+			color: $cart-text !important;
+			border-left-color: $cart-border !important;
+			border-right-color: $cart-border !important;
+		}
+	}
+
+	.wc-block-cart-item__remove-link {
+		color: $cart-faint !important;
+
+		&:hover {
+			color: $cart-text !important;
+		}
+	}
+
+	.wc-block-mini-cart__footer-subtotal .wc-block-components-totals-item__label,
+	.wc-block-mini-cart__footer .wc-block-components-totals-item__label {
+		color: $cart-heading !important;
+		font-weight: 600;
+	}
+
+	.wc-block-mini-cart__footer-subtotal .wc-block-components-totals-item__value,
+	.wc-block-mini-cart__footer .wc-block-components-totals-item__value,
+	.wc-block-mini-cart__footer .wc-block-formatted-money-amount {
+		color: $cart-heading !important;
+		font-weight: 700;
+	}
+
+	.wc-block-mini-cart__footer .wc-block-components-totals-item__description,
+	.wc-block-mini-cart__footer-subtotal + p {
+		color: $cart-muted !important;
+	}
+
+	// Mini-cart savings badge — neutral brown, no red
+	.wc-block-components-sale-badge,
+	.wc-block-components-product-badge,
+	.wc-block-cart-item__sale-badge,
+	.wc-block-cart-item__savings,
+	.wc-block-components-totals-item--savings,
+	.wc-block-components-totals-item--savings .wc-block-components-totals-item__value,
+	.wc-block-components-totals-discount,
+	.wc-block-components-totals-discount .wc-block-components-totals-item__value {
+		background: $cart-brown-soft !important;
+		color: $cart-brown !important;
+		border: none !important;
+		border-color: transparent !important;
+		box-shadow: none !important;
+		font-weight: 600;
+	}
+
+	.wc-block-mini-cart__footer-actions {
+
+		// "View my cart" — solid brown, white text, no border
+		.wc-block-mini-cart__footer-cart,
+		a:first-child {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			border-radius: 8px !important;
+			box-shadow: none !important;
+			transition: opacity 0.2s ease !important;
+
+			&:hover,
+			&:focus,
+			&:focus-visible,
+			&:active {
+				background: $cart-brown !important;
+				color: #fff !important;
+				border: none !important;
+				opacity: 0.9 !important;
+				transform: none !important;
+				box-shadow: none !important;
+			}
+		}
+
+		// "Go to checkout" — solid brown, white text, no border
+		.wc-block-mini-cart__footer-checkout,
+		a:last-child {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			border-radius: 8px !important;
+			box-shadow: none !important;
+			transition: opacity 0.2s ease !important;
+
+			&:hover,
+			&:focus,
+			&:focus-visible,
+			&:active {
+				background: $cart-brown !important;
+				color: #fff !important;
+				border: none !important;
+				opacity: 0.9 !important;
+				transform: none !important;
+				box-shadow: none !important;
+			}
+		}
+	}
+
+	.wc-block-mini-cart__empty-cart-wrapper p {
+		color: $cart-muted !important;
+	}
+
+	.wc-block-mini-cart__shopping-button a {
+		background: $cart-brown !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		transition: opacity 0.2s ease !important;
+
+		&:hover,
+		&:focus,
+		&:focus-visible,
+		&:active {
+			background: $cart-brown !important;
+			color: #fff !important;
+			border: none !important;
+			opacity: 0.9 !important;
+			transform: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	.wc-block-mini-cart__badge {
+		background: $cart-brown !important;
+		color: #fff !important;
+	}
+}
+
+// =============================================================================
+// 6. MOBILE — full-width buttons, comfortable touch targets, tighter cards
+// =============================================================================
+@include until(md) {
+
+	.zc .zc-items,
+	.zc .zc-sidebar,
+	.zc .zc-empty,
+	.wp-block-woocommerce-cart .wc-block-cart__main,
+	.wp-block-woocommerce-cart .wc-block-cart-items,
+	.wp-block-woocommerce-cart .wc-block-cart__sidebar,
+	.wc-block-cart .wc-block-cart__main,
+	.wc-block-cart .wc-block-cart-items,
+	.wc-block-cart .wc-block-cart__sidebar {
+		padding: 1.25rem !important;
+		border-radius: $cart-radius !important;
+	}
+
+	.zc .zc-sidebar__checkout,
+	.wc-block-mini-cart__footer-actions a,
+	.wc-block-mini-cart__footer-actions .wc-block-components-button,
+	.wp-block-woocommerce-cart .wc-block-cart__submit-button,
+	.wc-block-cart .wc-block-cart__submit-button {
+		width: 100% !important;
+		min-height: 44px !important;
+		padding: 0.85rem 1rem !important;
+		font-size: 0.95rem !important;
+	}
+
+	.wc-block-mini-cart__footer-actions {
+		flex-direction: column !important;
+		gap: 0.5rem !important;
+	}
+
+	.zc .zc-empty__actions {
+		flex-direction: column;
+		gap: 0.5rem;
+
+		.zc-empty__btn {
+			width: 100%;
+			min-height: 44px;
+		}
+	}
+
+	.wp-block-woocommerce-cart .wc-block-cart-item__row,
+	.wc-block-cart .wc-block-cart-item__row {
+		padding: 0.85rem 0 !important;
+	}
+}

@@ -1,5 +1,5 @@
-import { useBlockProps, InspectorControls, MediaUpload, PanelColorSettings } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, Button, TextControl, SelectControl } from '@wordpress/components';
+import { useBlockProps, InspectorControls, MediaUpload, PanelColorSettings, RichText } from '@wordpress/block-editor';
+import { PanelBody, RangeControl, Button, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -92,18 +92,32 @@ export default function Edit({ attributes, setAttributes }) {
             <div key={item.id || index} className={`eg__item ${item.span === 'large' ? 'eg__item--large' : ''}`}>
               <div className="eg__image-wrap">
                 <img src={item.url} alt={item.alt} className="eg__image" />
+                <button
+                  type="button"
+                  className="eg__remove-btn"
+                  onClick={() => removeItem(index)}
+                  aria-label={__('Remove image', 'ai-zippy-child')}
+                  title={__('Remove image', 'ai-zippy-child')}
+                >
+                  ×
+                </button>
                 <div className="eg__overlay" style={{ backgroundColor: overlayColor }}>
-                  <span className="eg__caption" style={{ color: overlayTextColor }}>
-                    {item.caption || __('Add caption…', 'ai-zippy-child')}
-                  </span>
+                  <RichText
+                    tagName="span"
+                    className="eg__caption"
+                    style={{ color: overlayTextColor }}
+                    value={item.caption}
+                    onChange={(value) => {
+                      const updated = [...items];
+                      updated[index] = { ...updated[index], caption: value };
+                      setAttributes({ items: updated });
+                    }}
+                    placeholder={__('Enter caption…', 'ai-zippy-child')}
+                    allowedFormats={['core/bold', 'core/italic']}
+                  />
                 </div>
               </div>
               <div className="eg__item-controls">
-                <TextControl
-                  placeholder={__('Image caption…', 'ai-zippy-child')}
-                  value={item.caption}
-                  onChange={(val) => updateItem(index, 'caption', val)}
-                />
                 <SelectControl
                   value={item.span}
                   options={[

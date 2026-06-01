@@ -1,0 +1,493 @@
+// =============================================================================
+// Shop Page Color Overrides — YV Wellness child theme
+//
+// The parent theme uses $c-primary throughout the shop page. The child theme
+// resolves $c-primary to the brand red (#d50017), which leaks onto product
+// titles, prices, filter headings and pagination — all of which should read
+// as neutral text. These rules retone the shop surface to a dark/gray palette
+// while leaving the brand red available globally for buttons and accents.
+//
+// Scope: every selector lives under `.shop-page` or `#ai-zippy-shop-filter`
+// so other pages (cart, checkout, single product, marketing pages) keep their
+// existing red accents intact.
+// =============================================================================
+
+@use "variables" as *;
+
+// === Neutral palette tokens (local to shop scope) ===
+$shop-text:        #1a1a1a; // titles, filter headings, pagination active
+$shop-text-muted:  #333333; // body labels, sale price, prices
+$shop-text-soft:   #666666; // category labels
+$shop-text-faint:  #999999; // strikethrough, inactive icons
+$shop-border:      #e5e5e5;
+
+// -----------------------------------------------------------------------------
+// 1. Re-tint the primary CSS custom property *only* on the shop surface.
+//    The shop-filter React app and parent _shop.scss read this var directly,
+//    so flipping it here cascades into pagination, hover states and toolbar
+//    focus rings without per-selector overrides.
+// -----------------------------------------------------------------------------
+.shop-page,
+#ai-zippy-shop-filter,
+.shop-page #ai-zippy-shop-filter {
+	--wp--preset--color--primary: #{$shop-text};
+}
+
+// =============================================================================
+// React shop-filter cards (.sf__*) — actual rendered selectors
+// =============================================================================
+
+.shop-page,
+#ai-zippy-shop-filter {
+
+	// Category eyebrow above title
+	.sf__card-cat {
+		color: $shop-text-soft !important;
+	}
+
+	// Product title link
+	.sf__card-title {
+		color: $shop-text !important;
+
+		&:hover,
+		&:focus {
+			color: $shop-text-muted !important;
+		}
+	}
+
+	// Price block
+	.sf__card-price {
+		color: $shop-text-muted !important;
+		font-weight: 700;
+
+		ins {
+			color: $shop-text-muted !important;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		del,
+		del .woocommerce-Price-amount,
+		del bdi {
+			color: $shop-text-faint !important;
+			font-weight: 400;
+		}
+	}
+
+	// =============================
+	// Filter sidebar / panel
+	// =============================
+
+	// Section headings: PRICE, AVAILABILITY, CATEGORY, etc.
+	.sf__section-toggle,
+	.sf__filters-title {
+		color: $shop-text !important;
+
+		&:hover,
+		&:focus {
+			color: $shop-text !important;
+		}
+	}
+
+	// Checkbox / radio labels under headings
+	.sf__checkbox,
+	.sf__radio,
+	.sf__checkbox-label {
+		color: $shop-text-muted;
+	}
+
+	// Price range inputs focus ring
+	.sf__price-input:focus,
+	.sf__search-input:focus,
+	.sf__sort:focus {
+		border-color: $shop-text !important;
+	}
+
+	// =============================
+	// Toolbar — view / layout toggles (the icons that were red)
+	// =============================
+	.sf__layout-btn,
+	.sf__view-btn {
+		color: $shop-text-faint;
+
+		&:hover,
+		&.is-active {
+			color: $shop-text-muted !important;
+			border-color: $shop-text-muted !important;
+			background: #f5f5f5 !important;
+		}
+	}
+
+	// =============================
+	// Pagination
+	// =============================
+	.sf__page-btn {
+		color: $shop-text-muted;
+		border-color: $shop-border;
+
+		&:hover:not(:disabled) {
+			background: #f5f5f5;
+			color: $shop-text;
+			border-color: $shop-text;
+		}
+
+		&.is-active {
+			background: $shop-text !important;
+			color: #fff !important;
+			border-color: $shop-text !important;
+		}
+	}
+}
+
+// =============================================================================
+// Server-rendered / WooCommerce block fallback selectors
+// (Parent _shop.scss styles `.shop-product-card` + `.wc-block-*`)
+// =============================================================================
+
+.shop-page {
+
+	// Product info link (title, meta) inside server-rendered cards
+	.shop-product-info a,
+	.shop-product-card .wc-block-components-product-name,
+	.wc-block-components-product-name {
+		color: $shop-text !important;
+
+		&:hover {
+			color: $shop-text-muted !important;
+		}
+	}
+
+	// Prices on server-rendered cards
+	.shop-product-card .wc-block-components-product-price,
+	.wc-block-components-product-price {
+		color: $shop-text-muted !important;
+
+		ins,
+		ins bdi {
+			color: $shop-text-muted !important;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		del,
+		del bdi {
+			color: $shop-text-faint !important;
+			font-weight: 400;
+		}
+	}
+
+	// Toolbar view buttons (server-rendered variant)
+	.shop-view-btn {
+		color: $shop-text-faint;
+
+		&:hover,
+		&.is-active {
+			color: $shop-text-muted !important;
+			border-color: $shop-text-muted !important;
+			background: #f5f5f5 !important;
+		}
+	}
+
+	// Pagination (block query pagination)
+	.wp-block-query-pagination .page-numbers {
+		color: $shop-text-muted;
+
+		&:hover {
+			background: #f5f5f5;
+			color: $shop-text;
+			border-color: $shop-text;
+		}
+
+		&.current {
+			background: $shop-text !important;
+			color: #fff !important;
+			border-color: $shop-text !important;
+		}
+	}
+
+	// Sidebar category links
+	.shop-sidebar .wc-block-product-categories-list a {
+		color: $shop-text-muted;
+
+		&:hover {
+			color: $shop-text;
+		}
+	}
+
+	// Add-to-cart button (server-rendered fallback) — brand brown, no hover bg change.
+	.shop-product-card .shop-add-to-cart {
+		.wp-block-button__link,
+		.wc-block-components-product-button__button,
+		a {
+			background: #3B2715 !important;
+			color: #fff !important;
+			transition: opacity 0.2s ease, transform 0.2s ease;
+
+			&:hover,
+			&:focus,
+			&:focus-visible {
+				background: #3B2715 !important;
+				color: #fff !important;
+				opacity: 0.9;
+				transform: translateY(-1px);
+			}
+		}
+	}
+}
+
+// =============================================================================
+// Defensive aliases — also cover the `.zp-product-card` / `.zp-pagination`
+// naming variant in case templates render with that BEM convention.
+// =============================================================================
+
+.shop-page,
+#ai-zippy-shop-filter {
+
+	.zp-product-card__title a,
+	.zp-product-card__title {
+		color: $shop-text !important;
+
+		&:hover { color: $shop-text-muted !important; }
+	}
+
+	.zp-product-card__category {
+		color: $shop-text-soft !important;
+	}
+
+	.zp-product-card__price {
+		color: $shop-text-muted !important;
+		font-weight: 700;
+
+		ins {
+			color: $shop-text-muted !important;
+			font-weight: 700;
+			text-decoration: none;
+		}
+		del {
+			color: $shop-text-faint !important;
+			font-weight: 400;
+		}
+	}
+
+	.zp-pagination__link--active,
+	.zp-pagination__link.is-active {
+		background: $shop-text !important;
+		color: #fff !important;
+		border-color: $shop-text !important;
+	}
+}
+
+// =============================================================================
+// Add-to-Cart button — force dark default, subtle hover, always visible
+//
+// The parent theme styles `.sf__card-btn` with navy default + lighter hover,
+// but on the shop surface other rules (link resets, primary recolor, WC block
+// styles) flip the visual to a white default. Pin the button to a deep
+// near-black so the contrast is consistent and the call-to-action is always
+// readable from the moment the card renders — never hidden until hover.
+// =============================================================================
+
+$shop-btn-bg:       #3B2715; // brand brown, aligns with theme palette
+$shop-btn-bg-hover: #3B2715; // keep same brown on hover — only opacity/translate change
+
+.shop-page,
+#ai-zippy-shop-filter {
+
+	// Card hover: subtle lift only, no aggressive colour shift
+	.sf__card {
+		transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+		}
+	}
+
+	// Always-visible actions row (defensive — some themes hide until hover)
+	.sf__card-actions {
+		opacity: 1 !important;
+		visibility: visible !important;
+		display: flex !important;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	// Add-to-cart / Select-options button
+	.sf__card-btn,
+	a.sf__card-btn,
+	.sf__card-btn.az-add-to-cart,
+	a.sf__card-btn.az-add-to-cart {
+		background: $shop-btn-bg !important;
+		background-color: $shop-btn-bg !important;
+		color: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+		text-decoration: none !important;
+		transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+
+		svg,
+		svg * {
+			stroke: #fff !important;
+			color: #fff !important;
+		}
+
+		&:hover,
+		&:focus,
+		&:focus-visible {
+			background: $shop-btn-bg !important;
+			background-color: $shop-btn-bg !important;
+			color: #fff !important;
+			transform: translateY(-1px);
+			opacity: 0.9;
+		}
+
+		&:active {
+			transform: translateY(0);
+			opacity: 1;
+		}
+
+		// Loading / added states keep dark surface so the button never flashes
+		// to white between async transitions.
+		&.is-loading {
+			background: $shop-btn-bg !important;
+			opacity: 0.75;
+		}
+	}
+
+	// Wishlist heart button — keep neutral, no jarring hover
+	.sf__card-wish-sm,
+	.sf__card-wish {
+		background: #fff !important;
+		border: 1px solid #e5e5e5 !important;
+		color: #999 !important;
+		box-shadow: none !important;
+		transition: color 0.2s ease, border-color 0.2s ease;
+
+		&:hover,
+		&:focus,
+		&:focus-visible {
+			color: $shop-text !important;
+			border-color: #cfcfcf !important;
+			background: #fff !important;
+			transform: none;
+		}
+
+		&.is-active {
+			color: $shop-text !important;
+			border-color: $shop-text !important;
+		}
+	}
+}
+
+// Mobile: stack actions and let the cart button fill the card width.
+@include until(md) {
+
+	.shop-page,
+	#ai-zippy-shop-filter {
+
+		.sf__card-actions {
+			flex-wrap: wrap;
+		}
+
+		.sf__card-btn {
+			flex: 1 1 100%;
+			width: 100%;
+			justify-content: center;
+			padding: 0.75rem 1rem !important;
+		}
+
+		.sf__card-wish-sm {
+			margin-left: auto;
+		}
+	}
+}
+
+// =============================================================================
+// Search Input — borderless style with subtle background
+// =============================================================================
+
+.shop-page,
+#ai-zippy-shop-filter {
+
+	// Shop sidebar search container — flex for icon + input spacing
+	.sf__search {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	// Search icon spacing
+	.sf__search-icon {
+		position: absolute;
+		left: 0.85rem;
+		pointer-events: none;
+		color: #999;
+	}
+
+	// Remove border, add subtle background
+	.sf__search-input {
+		border: none !important;
+		box-shadow: none !important;
+		background: #f5f5f5;
+		border-radius: 8px;
+		padding: 0.7rem 2rem 0.7rem 2.5rem;
+		width: 100%;
+		font-size: 0.85rem;
+		color: #1a1a1a;
+		transition: background-color 0.2s ease;
+
+		&:focus {
+			border: none !important;
+			box-shadow: none !important;
+			background: #eeeeee;
+			outline: none;
+		}
+
+		&::placeholder {
+			color: #aaa;
+		}
+	}
+}
+
+// =============================================================================
+// Active Filter Tags — pleasant neutral colors
+// (Parent uses var(--wp--preset--color--secondary) which resolves to brown
+//  in the child theme; override with explicit light neutral values.)
+// =============================================================================
+
+.shop-page,
+#ai-zippy-shop-filter {
+
+	.sf__tag {
+		background: #f0ebe6 !important;
+		color: #3B2715 !important;
+		border: 1px solid rgba(59, 39, 21, 0.12);
+		border-radius: 20px;
+		padding: 0.35rem 0.85rem;
+		font-size: 0.78rem;
+		font-weight: 500;
+	}
+
+	.sf__tag-remove {
+		color: #888 !important;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: #1a1a1a !important;
+		}
+	}
+}
+
+// =============================================================================
+// Sale badge — light red palette
+// (Parent renders `.sf__badge--sale` against the brand brown by default; on the
+//  shop surface the badge should read as a clearly distinct sale indicator.)
+// =============================================================================
+
+.sf__badge--sale,
+#ai-zippy-shop-filter .sf__badge--sale,
+.shop-page .sf__badge--sale {
+	background: #fee2e2 !important; // light red bg
+	color: #dc2626 !important;     // red text
+	border: none !important;
+}

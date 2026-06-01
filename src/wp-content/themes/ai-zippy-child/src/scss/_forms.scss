@@ -138,3 +138,33 @@ input[type="search"] {
     transition: none;
   }
 }
+
+// =============================================================================
+// Global focus outline reset — neutralizes browser/framework focus rings on
+// all interactive elements site-wide (inputs, buttons, links, WP/WC blocks).
+// =============================================================================
+input,
+select,
+textarea,
+button,
+a,
+[type="button"],
+[type="submit"],
+[type="reset"],
+.wp-element-button,
+.wc-block-components-button,
+.wp-block-button__link {
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: inherit !important;
+  }
+}
+
+// Catch-all for any remaining WordPress-specific focus states
+*:focus,
+*:focus-visible {
+  outline: none !important;
+}

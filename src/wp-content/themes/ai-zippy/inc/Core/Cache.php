@@ -13,7 +13,9 @@ defined('ABSPATH') || exit;
 class Cache
 {
     /** Filter options: categories, attributes, price range */
-    const FILTER_OPTIONS = 'ai_zippy_filter_options';
+    /* v2 — bumped after switching getCategories() to hide_empty=false so the
+       previously cached empty-category payload is bypassed immediately. */
+    const FILTER_OPTIONS = 'ai_zippy_filter_options_v2';
 
     /** TTL: 5 minutes */
     const FILTER_OPTIONS_TTL = 5 * MINUTE_IN_SECONDS;

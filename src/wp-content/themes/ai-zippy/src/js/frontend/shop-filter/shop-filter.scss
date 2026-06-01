@@ -395,6 +395,18 @@ $sf-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	margin: 0;
 }
 
+.sf__cat-all {
+	list-style: none;
+	margin: 0 0 0.35rem;
+	padding-bottom: 0.45rem;
+	border-bottom: 1px solid $sf-border;
+
+	.sf__checkbox--all {
+		font-weight: 600;
+		letter-spacing: 0.01em;
+	}
+}
+
 .sf__cat-children {
 	list-style: none;
 	padding-left: 1.25rem;
