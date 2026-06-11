@@ -11,8 +11,75 @@
 //   - .hg   → home-gallery (full-width drag-to-scroll carousel)
 // =============================================================================
 
+@use "variables" as *;
+
 @media (max-width: 767.98px) {
   [class*="wp-block-ai-zippy-"]:not(.hbh):not(.bhp):not(.hg) {
     padding: 30px 10px !important;
+  }
+}
+
+// =============================================================================
+// Mobile typography minimum — ensure all body / general text is at least 1rem
+// (16px) on viewports below the `md` breakpoint (max-width: 767px).
+//
+// The shared typography variables (`$fs-small`, `$fs-medium`) use `clamp()`
+// which collapses to ~12–14px on narrow screens. This block restores a
+// readable 1rem baseline for body copy, lists, tables, forms, and inline
+// text — without touching headings (h1–h6) which are intentionally larger.
+// =============================================================================
+@include until(md) {
+  body,
+  p,
+  li,
+  dt,
+  dd,
+  th,
+  td,
+  caption,
+  figcaption,
+  blockquote,
+  cite,
+  span,
+  a,
+  small,
+  strong,
+  em,
+  b,
+  i,
+  label,
+  legend,
+  input,
+  textarea,
+  select,
+  option,
+  button,
+  .wp-block-paragraph,
+  .wp-block-list,
+  .wp-block-list li,
+  .wp-block-table td,
+  .wp-block-table th,
+  .wp-block-quote,
+  .wp-block-quote p,
+  .wp-block-button__link,
+  .has-small-font-size,
+  .has-medium-font-size,
+  .has-normal-font-size,
+  .has-regular-font-size {
+    font-size: 0.969rem !important;
+  }
+
+  // Inputs: also enforce 16px to prevent iOS Safari auto-zoom on focus.
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+// Home-products-grid: product name mobile size
+@include until(md) {
+  .hpg__card-name {
+    font-size: 0.969rem !important;
   }
 }
