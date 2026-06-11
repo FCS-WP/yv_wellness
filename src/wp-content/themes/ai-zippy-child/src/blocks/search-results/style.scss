@@ -28,7 +28,7 @@ $sr-ease:          cubic-bezier(0.4, 0, 0.2, 1);
     gap: clamp(2.5rem, 5vw, 4rem);
 
     @media (max-width: 768px) {
-        padding: 30px 10px;
+        padding: 15px 0;
     }
 
     *,

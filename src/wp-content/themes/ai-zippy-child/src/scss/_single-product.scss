@@ -206,6 +206,27 @@ body.single-product {
   }
 }
 
+// Mobile: fix quantity stepper sizing (global form override breaks layout)
+@include until(md) {
+  .zp-qty {
+    border-radius: 6px;
+  }
+
+  .zp-qty__btn {
+    width: 44px;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+
+  .zp-qty__input {
+    width: 80px !important;
+    min-height: 44px !important;
+    font-size: 1rem !important;
+    padding: 0;
+    line-height: 1;
+  }
+}
+
 // =============================================================================
 // Add to Cart + Buy Now buttons
 // =============================================================================
@@ -302,22 +323,75 @@ body.single-product {
 // =============================================================================
 // Mobile sticky add-to-cart bar
 // =============================================================================
+// ─── Sticky Cart: Premium mobile bar ────────────────────────────────
 .zp-sticky-cart {
-  border-top-color: $sp-border;
+  padding: 0.85rem 1.25rem;
+  background: #fff;
+  border-top: none;
+  box-shadow:
+    0 -2px 8px rgba(59, 39, 21, 0.06),
+    0 -8px 24px rgba(59, 39, 21, 0.1);
+  border-radius: 16px 16px 0 0;
+  gap: 0.85rem;
 
-  &__title { color: $sp-text-strong; }
+  &__thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    border: 1px solid rgba(59, 39, 21, 0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  &__info {
+    gap: 0.2rem;
+  }
+
+  &__title {
+    color: $sp-text-strong;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
 
   &__price {
-    color: $sp-text-strong;
-    del { color: $sp-text-soft; }
+    color: $sp-accent;
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    del {
+      color: $sp-text-soft;
+      font-size: 0.75rem;
+      margin-right: 0.25rem;
+    }
+
+    ins {
+      text-decoration: none;
+    }
   }
 
   &__btn {
     background: $sp-accent;
     color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    box-shadow: 0 3px 10px rgba(59, 39, 21, 0.2);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover,
-    &:focus { background: $sp-text-strong; }
+    &:focus {
+      background: $sp-text-strong;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(59, 39, 21, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(59, 39, 21, 0.15);
+    }
   }
 }
 

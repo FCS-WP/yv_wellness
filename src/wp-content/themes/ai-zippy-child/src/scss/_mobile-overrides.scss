@@ -14,7 +14,7 @@
 @use "variables" as *;
 
 @media (max-width: 767.98px) {
-  [class*="wp-block-ai-zippy-"]:not(.hbh):not(.bhp):not(.hg) {
+  [class*="wp-block-ai-zippy-"]:not(.hbh):not(.bhp):not(.hg):not(.search-results) {
     padding: 30px 10px !important;
   }
 }

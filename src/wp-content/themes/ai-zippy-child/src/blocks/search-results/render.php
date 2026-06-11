@@ -119,9 +119,6 @@ $section_index = 0;
             <p class="search-results__empty-desc">
                 <?php esc_html_e('Try a different keyword, or browse our collections, journal entries, and pages below.', 'ai-zippy-child'); ?>
             </p>
-            <div class="search-results__empty-form">
-                <?php echo get_search_form(['echo' => false]); ?>
-            </div>
         </div>
 
     <?php else : ?>
